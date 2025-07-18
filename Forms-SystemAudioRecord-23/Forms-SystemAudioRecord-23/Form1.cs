@@ -72,6 +72,15 @@ namespace Forms_SystemAudioRecord_23
                 Console.WriteLine(fileOutputName);
                 this.capture = new WasapiLoopbackCapture();
                 var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
+                // 2 cách đều dùng được
+                //capture.DataAvailable += async (s, e_a) =>
+                //{
+                //    if (writer != null)
+                //    {
+                //        await writer.WriteAsync(e_a.Buffer, 0, e_a.BytesRecorded);
+                //        await writer.FlushAsync();
+                //    }
+                //};
                 capture.DataAvailable += (s, e_a) =>
                 {
                     if (writer != null)
@@ -80,7 +89,7 @@ namespace Forms_SystemAudioRecord_23
                         writer.FlushAsync();
                     }
                 };
-                this.capture.StartRecording();
+                capture.StartRecording();
                 Thread.Sleep(5000);
                 this.capture.StopRecording();
                 if (this.threadSystemAudioRecordControl == 2)
