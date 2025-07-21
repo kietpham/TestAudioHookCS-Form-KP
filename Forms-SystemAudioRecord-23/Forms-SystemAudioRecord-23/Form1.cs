@@ -90,7 +90,7 @@ namespace Forms_SystemAudioRecord_23
                         var voskResult = recVosk.Result();
                         Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
                         var voskResultValue = JObject.Parse(voskResult)["text"];
-                        labelVoskTranscriptMicIn += voskResultValue + "|";
+                        labelVoskTranscriptMicIn += voskResultValue + " | ";
                         Console.WriteLine(voskResultValue);
                         ThreadHelperClass.SetText(this, label_VoskTranscript_Mic, labelVoskTranscriptMicIn);
                     }
@@ -154,7 +154,7 @@ namespace Forms_SystemAudioRecord_23
                     var voskResult = recVosk.Result();
                     Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
                     var voskResultValue = JObject.Parse(voskResult)["text"];
-                    labelVoskTranscriptSystemAudio += voskResult + "|";
+                    labelVoskTranscriptSystemAudio += voskResult + " | ";
                     Console.WriteLine(voskResultValue);
                     ThreadHelperClass.SetText(this, label_VoskTranscript_System, labelVoskTranscriptSystemAudio);
                 }
