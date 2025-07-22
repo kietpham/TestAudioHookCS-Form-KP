@@ -17,10 +17,10 @@ namespace Forms_SystemAudioRecord_23
 {
     public partial class FormRecordSpeaker : Form
     {
-        public static string labelVoskTranscriptSystemAudio;
-        public static string labelVoskTranscriptMicIn;
-        public static string labelMSTranscriptSystemAudio;
-        public static string labelMSTranscriptMicIn;
+        public static string text_LabelVoskTranscriptSystemAudio;
+        public static string text_LabelVoskTranscriptMicIn;
+        public static string text_LabelMSTranscriptSystemAudio;
+        public static string text_LabelMSTranscriptMicIn;
         private string outputMicRecordFileName = "";
         private string outputSystemRecordFileName = "";
         private WasapiLoopbackCapture capture;
@@ -33,6 +33,7 @@ namespace Forms_SystemAudioRecord_23
         public int systemAudioSampleRate = 16000;
 
         public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
+        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
 
         public FormRecordSpeaker()
         {
@@ -45,10 +46,10 @@ namespace Forms_SystemAudioRecord_23
                 Console.WriteLine(directSoundOutList[i].Description.ToString());
                 listBox_Speakers.Items.Add(directSoundOutList[i].Description);
             }
-            this.label_MSTranscript_Mic.Text = labelMSTranscriptMicIn;
-            this.label_MSTranscript_System.Text = labelMSTranscriptSystemAudio;
-            this.label_VoskTranscript_Mic.Text = labelVoskTranscriptMicIn;
-            this.label_VoskTranscript_System.Text = labelVoskTranscriptSystemAudio;
+            this.label_MSTranscript_Mic.Text = text_LabelMSTranscriptMicIn;
+            this.label_MSTranscript_System.Text = text_LabelMSTranscriptSystemAudio;
+            this.label_VoskTranscript_Mic.Text = text_LabelVoskTranscriptMicIn;
+            this.label_VoskTranscript_System.Text = text_LabelVoskTranscriptSystemAudio;
         }
 
         void RecordMicIn()
@@ -90,9 +91,10 @@ namespace Forms_SystemAudioRecord_23
                         var voskResult = recVosk.Result();
                         Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
                         var voskResultValue = JObject.Parse(voskResult)["text"];
-                        labelVoskTranscriptMicIn += voskResultValue + " | ";
+                        text_LabelVoskTranscriptMicIn += voskResultValue + " | ";
                         Console.WriteLine(voskResultValue);
-                        ThreadHelperClass.SetText(this, label_VoskTranscript_Mic, labelVoskTranscriptMicIn);
+                        //ThreadHelperClass.SetText(this, label_VoskTranscript_Mic, text_LabelVoskTranscriptMicIn);
+                        ThreadHelperClass.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn);
                     }
 
                     if (this.threadMicRecordControl == 2) return;
@@ -154,9 +156,10 @@ namespace Forms_SystemAudioRecord_23
                     var voskResult = recVosk.Result();
                     Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
                     var voskResultValue = JObject.Parse(voskResult)["text"];
-                    labelVoskTranscriptSystemAudio += voskResultValue + " | ";
+                    text_LabelVoskTranscriptSystemAudio += voskResultValue + " | ";
                     Console.WriteLine(voskResultValue);
-                    ThreadHelperClass.SetText(this, label_VoskTranscript_System, labelVoskTranscriptSystemAudio);
+                    //ThreadHelperClass.SetText(this, label_VoskTranscript_System, labelVoskTranscriptSystemAudio);
+                    ThreadHelperClass.SetText(this, richTextBox_SAudio_Vosk_Transcript, text_LabelVoskTranscriptSystemAudio);
                 }
 
                 if (this.threadSystemAudioRecordControl == 2)
