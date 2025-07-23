@@ -18,7 +18,7 @@ namespace Forms_SystemAudioRecord_23
     public partial class FormRecordSpeaker : Form
     {
         public static int maxLoop = 200;
-        public static int sleepTime = 7500;
+        public static int sleepTime = 2500;
         public static string text_LabelVoskTranscriptSystemAudio;
         public static string text_LabelVoskTranscriptMicIn;
         public static string text_LabelMSTranscriptSystemAudio;
@@ -34,8 +34,8 @@ namespace Forms_SystemAudioRecord_23
         public int micSampleRate = 44100;
         public int systemAudioSampleRate = 44100; //16000
 
-        public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
-        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
+        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
+        public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
 
         public FormRecordSpeaker()
         {
