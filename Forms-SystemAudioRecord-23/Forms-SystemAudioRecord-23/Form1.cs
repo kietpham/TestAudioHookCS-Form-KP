@@ -18,7 +18,7 @@ namespace Forms_SystemAudioRecord_23
     public partial class FormRecordSpeaker : Form
     {
         public static int maxLoop = 200;
-        public static int sleepTime = 1500;
+        public static int sleepTime = 7500;
         public static string text_LabelVoskTranscriptSystemAudio;
         public static string text_LabelVoskTranscriptMicIn;
         public static string text_LabelMSTranscriptSystemAudio;
@@ -32,7 +32,7 @@ namespace Forms_SystemAudioRecord_23
         private int threadMicRecordControl; // 1 start, 2 stop
         private int threadSystemAudioRecordControl; // 1 start, 2 stop
         public int micSampleRate = 44100;
-        public int systemAudioSampleRate = 16000;
+        public int systemAudioSampleRate = 44100; //16000
 
         public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
         //public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
@@ -245,22 +245,26 @@ namespace Forms_SystemAudioRecord_23
         // 2 Enginee
         private void checkBox_SystemAudio_Use_Vosk_CheckedChanged(object sender, EventArgs e)
         {
-            checkBox_SystemAudio_Use_MS.Checked = !checkBox_SystemAudio_Use_Vosk.Checked;
+            if(checkBox_SystemAudio_Use_MS.Checked == true)
+                checkBox_SystemAudio_Use_MS.Checked = !checkBox_SystemAudio_Use_Vosk.Checked;
         }
 
         private void checkBox_SystemAudio_Use_MS_CheckedChanged(object sender, EventArgs e)
         {
-            checkBox_SystemAudio_Use_Vosk.Checked = !checkBox_SystemAudio_Use_MS.Checked;
+            if(checkBox_SystemAudio_Use_Vosk.Checked == true)
+                checkBox_SystemAudio_Use_Vosk.Checked = !checkBox_SystemAudio_Use_MS.Checked;
         }
 
         private void checkBox_Mic_Use_Vosk_CheckedChanged(object sender, EventArgs e)
         {
-            checkBox_Mic_Use_MS.Checked = !checkBox_Mic_Use_Vosk.Checked;
+            if(checkBox_Mic_Use_MS.Checked == true)
+                checkBox_Mic_Use_MS.Checked = !checkBox_Mic_Use_Vosk.Checked;
         }
 
         private void checkBox_Mic_Use_MS_CheckedChanged(object sender, EventArgs e)
         {
-            checkBox_Mic_Use_Vosk.Checked = !checkBox_Mic_Use_MS.Checked;
+            if(checkBox_Mic_Use_Vosk.Checked == true)
+                checkBox_Mic_Use_Vosk.Checked = !checkBox_Mic_Use_MS.Checked;
         }
     }
 
