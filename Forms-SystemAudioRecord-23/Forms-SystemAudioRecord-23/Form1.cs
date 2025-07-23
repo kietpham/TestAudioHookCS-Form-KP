@@ -18,6 +18,7 @@ namespace Forms_SystemAudioRecord_23
     public partial class FormRecordSpeaker : Form
     {
         public static int maxLoop = 200;
+        public static int sleepTime = 1500;
         public static string text_LabelVoskTranscriptSystemAudio;
         public static string text_LabelVoskTranscriptMicIn;
         public static string text_LabelMSTranscriptSystemAudio;
@@ -73,7 +74,7 @@ namespace Forms_SystemAudioRecord_23
                         byteBuffer.AddRange(audioByteArray);
                     };
                     waveIn.StartRecording();
-                    Thread.Sleep(5000);
+                    Thread.Sleep(sleepTime);
                     this.waveIn.StopRecording();
 
                     // save File
@@ -138,7 +139,7 @@ namespace Forms_SystemAudioRecord_23
                 capture.RecordingStopped += (s, e) => { Console.WriteLine("Capture Recording Stopped"); };
 
                 capture.StartRecording();
-                Thread.Sleep(5000);
+                Thread.Sleep(sleepTime);
                 this.capture.StopRecording();
 
                 var soundByteArray = byteBuffer.ToArray();
@@ -202,12 +203,15 @@ namespace Forms_SystemAudioRecord_23
             button_Record.Enabled = true;
             this.threadSystemAudioRecordControl = 2;
             if (outputSystemRecordFileName == null) return;
-            var processStartInfo = new ProcessStartInfo
+            if (checkBox_RecordFile_System.Checked != true)
             {
-                FileName = Path.GetDirectoryName(outputSystemRecordFileName),
-                UseShellExecute = true
-            };
-            Process.Start(processStartInfo);
+                var processStartInfo = new ProcessStartInfo
+                {
+                    FileName = Path.GetDirectoryName(outputSystemRecordFileName),
+                    UseShellExecute = true
+                };
+                Process.Start(processStartInfo);
+            }
         }
 
         private void button_RecordMic_Click(object sender, EventArgs e)
