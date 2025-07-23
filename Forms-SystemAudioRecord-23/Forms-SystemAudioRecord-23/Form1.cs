@@ -203,7 +203,7 @@ namespace Forms_SystemAudioRecord_23
             button_Record.Enabled = true;
             this.threadSystemAudioRecordControl = 2;
             if (outputSystemRecordFileName == null) return;
-            if (checkBox_RecordFile_System.Checked != true)
+            if (checkBox_RecordFile_System.Checked == true)
             {
                 var processStartInfo = new ProcessStartInfo
                 {
