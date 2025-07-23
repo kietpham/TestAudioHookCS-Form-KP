@@ -34,8 +34,8 @@ namespace Forms_SystemAudioRecord_23
         public int micSampleRate = 44100;
         public int systemAudioSampleRate = 44100; //16000
 
-        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
-        public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
+        public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
+        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
 
         public FormRecordSpeaker()
         {
