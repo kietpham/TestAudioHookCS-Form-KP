@@ -1,7 +1,9 @@
 ﻿using NAudio.Wave;
 using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -17,8 +19,11 @@ namespace Forms_SystemAudioRecord_23
 {
     public partial class FormRecordSpeaker : Form
     {
-        public static int maxLoop = 200;
-        public static int sleepTime = 2500;
+        public static int maxLoop = int.Parse(ConfigurationManager.AppSettings.Get("maxLoop"));
+        public static int sleepTime = int.Parse(ConfigurationManager.AppSettings.Get("sleepTime"));
+        public static int micSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("micSampleRate"));
+        public static int systemAudioSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("systemAudioSampleRate")); //24000 or 16000
+
         public static string text_LabelVoskTranscriptSystemAudio;
         public static string text_LabelVoskTranscriptMicIn;
         public static string text_LabelMSTranscriptSystemAudio;
@@ -31,11 +36,8 @@ namespace Forms_SystemAudioRecord_23
         private Thread systemAudioRecordThread;
         private int threadMicRecordControl; // 1 start, 2 stop
         private int threadSystemAudioRecordControl; // 1 start, 2 stop
-        public int micSampleRate = 44100;
-        public int systemAudioSampleRate = 44100; //16000
 
-        public Model voskModel = new Model("C:\\GitHub\\vosk-model-small-en-us-0.15");
-        //public Model voskModel = new Model("C:\\GitHub\\vosk-model-en-us-0.22");
+        public Model voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
 
         public FormRecordSpeaker()
         {
@@ -58,10 +60,10 @@ namespace Forms_SystemAudioRecord_23
         {
             Console.WriteLine("RecordMicIn");
             int i = 0;
-            var recVosk = new VoskRecognizer(this.voskModel, this.micSampleRate);
+            var recVosk = new VoskRecognizer(this.voskModel, micSampleRate);
             while (threadMicRecordControl == 1 && i < maxLoop)
             {
-                var waveFormat = new WaveFormat(this.micSampleRate, 1);
+                var waveFormat = new WaveFormat(micSampleRate, 1);
                 var byteBuffer = new List<byte>();
                 using (this.waveIn = new WaveInEvent())
                 {
@@ -79,16 +81,17 @@ namespace Forms_SystemAudioRecord_23
 
                     // save File
                     var soundByteArray = byteBuffer.ToArray();
+                    string fileOutputName = this.outputMicRecordFileName + i.ToString() + ".wav";
                     if (checkBox_RecordFile_System.Checked == true)
                     {
-                        string fileOutputName = this.outputMicRecordFileName + i.ToString() + ".wav";
                         var waveFile = new WaveFileWriter(fileOutputName, waveFormat);
                         waveFile.Write(soundByteArray, 0, soundByteArray.Length);
                         waveFile.Flush();
+                        waveFile.Close();
                     }
 
                     // Transcript Mic using Vosk
-                    if (recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
+                    if (checkBox_Mic_Use_Vosk.Checked == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                     {
                         var voskResult = recVosk.Result();
                         Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
@@ -98,7 +101,24 @@ namespace Forms_SystemAudioRecord_23
                         //ThreadHelperClass.SetText(this, label_VoskTranscript_Mic, text_LabelVoskTranscriptMicIn);
                         ThreadHelperClass.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn);
                     }
-                    // Transcript Mic using MS
+                    // Transcript Mic using MS / API
+                    else if (checkBox_Mic_Use_MS.Checked == true)
+                    {
+                        var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
+                        {
+                            MaxTimeout = -1,
+                        };
+                        var client = new RestClient(options);
+                        var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
+                        request.AlwaysMultipartFormData = true;
+                        request.AddFile("file", fileOutputName);
+                        RestResponse response = client.Execute(request);
+                        Console.WriteLine("API: " + response.Content);
+                        var jsonResult = JObject.Parse(response.Content);
+                        var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
+                        text_LabelMSTranscriptMicIn += result + " | ";
+                        ThreadHelperClass.SetText(this, richTextBox_MicIn_MS_Transcript, text_LabelMSTranscriptMicIn);
+                    }
 
                     if (this.threadMicRecordControl == 2) return;
                     i++;
@@ -109,11 +129,11 @@ namespace Forms_SystemAudioRecord_23
         void RecordSystemAudio()
         {
             int i = 0;
-            var recVosk = new VoskRecognizer(this.voskModel, this.systemAudioSampleRate);
+            var recVosk = new VoskRecognizer(this.voskModel, systemAudioSampleRate);
             while (threadSystemAudioRecordControl == 1 && i < maxLoop)
             {
                 capture = new WasapiLoopbackCapture();
-                capture.WaveFormat = new WaveFormat(this.systemAudioSampleRate, 1);
+                capture.WaveFormat = new WaveFormat(systemAudioSampleRate, 1);
                 var byteBuffer = new List<byte>();
                 // Capture Async dùng được, nhưng khó khăn khi làm transcript
                 //string fileOutputName = this.outputSystemRecordFileName + i.ToString() + ".wav";
@@ -145,16 +165,17 @@ namespace Forms_SystemAudioRecord_23
                 var soundByteArray = byteBuffer.ToArray();
 
                 // Save file
+                string fileOutputName = this.outputSystemRecordFileName + i.ToString() + ".wav";
                 if (checkBox_RecordFile_System.Checked == true)
                 {
-                    string fileOutputName = this.outputSystemRecordFileName + i.ToString() + ".wav";
                     Console.WriteLine(fileOutputName);
                     var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
                     writer.Write(soundByteArray, 0, soundByteArray.Length);
                     writer.Flush();
+                    writer.Close();
                 }
                 // Transcript System Audio using Vosk
-                if (recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
+                if (checkBox_SystemAudio_Use_Vosk.Checked == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                 {
                     var voskResult = recVosk.Result();
                     Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
@@ -165,6 +186,23 @@ namespace Forms_SystemAudioRecord_23
                     ThreadHelperClass.SetText(this, richTextBox_SAudio_Vosk_Transcript, text_LabelVoskTranscriptSystemAudio);
                 }
                 // Transcript System Audio using MS
+                else if (checkBox_SystemAudio_Use_MS.Checked == true)
+                {
+                    var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
+                    {
+                        MaxTimeout = -1,
+                    };
+                    var client = new RestClient(options);
+                    var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
+                    request.AlwaysMultipartFormData = true;
+                    request.AddFile("file", fileOutputName);
+                    RestResponse response = client.Execute(request);
+                    Console.WriteLine("API: " + response.Content);
+                    var jsonResult = JObject.Parse(response.Content);
+                    var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
+                    text_LabelMSTranscriptSystemAudio += result + " | ";
+                    ThreadHelperClass.SetText(this, richTextBox_SAudio_MS_Transcript, text_LabelMSTranscriptSystemAudio);
+                }
 
                 if (this.threadSystemAudioRecordControl == 2)
                 {
