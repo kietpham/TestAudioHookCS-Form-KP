@@ -19,25 +19,27 @@ namespace Forms_SystemAudioRecord_23
 {
     public partial class FormRecordSpeaker : Form
     {
-        public static int maxLoop = int.Parse(ConfigurationManager.AppSettings.Get("maxLoop"));
-        public static int sleepTime = int.Parse(ConfigurationManager.AppSettings.Get("sleepTime"));
-        public static int micSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("micSampleRate"));
-        public static int systemAudioSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("systemAudioSampleRate")); //24000 or 16000
+        //public int maxLoop = int.Parse(ConfigurationManager.AppSettings.Get("maxLoop"));     // Not in use
+        //public int sleepTime = int.Parse(ConfigurationManager.AppSettings.Get("sleepTime"));
+        //public int micSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("micSampleRate"));
+        //public int systemAudioSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("systemAudioSampleRate")); //24000 or 16000
+        //public int currentProcessID = 0;
+        //public string currentProcessName;
+        //public static string text_LabelVoskTranscriptSystemAudio;
+        //public static string text_LabelVoskTranscriptMicIn;
+        //public static string text_LabelMSTranscriptSystemAudio;
+        //public static string text_LabelMSTranscriptMicIn;
+        //private string outputMicRecordFileName = "";
+        //private string outputSystemRecordFileName = "";
+        //private WasapiLoopbackCapture capture;
+        //private WaveInEvent waveIn;
+        //private int threadMicRecordControl; // 1 start, 2 stop
+        //private int threadSystemAudioRecordControl; // 1 start, 2 stop
+        //public Model voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
 
-        public static string text_LabelVoskTranscriptSystemAudio;
-        public static string text_LabelVoskTranscriptMicIn;
-        public static string text_LabelMSTranscriptSystemAudio;
-        public static string text_LabelMSTranscriptMicIn;
-        private string outputMicRecordFileName = "";
-        private string outputSystemRecordFileName = "";
-        private WasapiLoopbackCapture capture;
-        private WaveInEvent waveIn;
         private Thread micRecordThread;
         private Thread systemAudioRecordThread;
-        private int threadMicRecordControl; // 1 start, 2 stop
-        private int threadSystemAudioRecordControl; // 1 start, 2 stop
-
-        public Model voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
+        private Thread textUpdate;
 
         public FormRecordSpeaker()
         {
@@ -50,171 +52,48 @@ namespace Forms_SystemAudioRecord_23
                 Console.WriteLine(directSoundOutList[i].Description.ToString());
                 listBox_Speakers.Items.Add(directSoundOutList[i].Description);
             }
-            this.label_MSTranscript_Mic.Text = text_LabelMSTranscriptMicIn;
-            this.label_MSTranscript_System.Text = text_LabelMSTranscriptSystemAudio;
-            this.label_VoskTranscript_Mic.Text = text_LabelVoskTranscriptMicIn;
-            this.label_VoskTranscript_System.Text = text_LabelVoskTranscriptSystemAudio;
-        }
+            //label_MSTranscript_Mic.Text = text_LabelMSTranscriptMicIn;
+            //label_MSTranscript_System.Text = text_LabelMSTranscriptSystemAudio;
+            //label_VoskTranscript_Mic.Text = text_LabelVoskTranscriptMicIn;
+            //label_VoskTranscript_System.Text = text_LabelVoskTranscriptSystemAudio;
+            //this.currentProcessID = Process.GetCurrentProcess().Id;
+            //this.currentProcessName = Process.GetCurrentProcess().ProcessName;
+            //RecordingHelper.capture = capture;
+            //RecordingHelper.waveIn = waveIn;
 
-        void RecordMicIn()
-        {
-            Console.WriteLine("RecordMicIn");
-            int i = 0;
-            var recVosk = new VoskRecognizer(this.voskModel, micSampleRate);
-            while (threadMicRecordControl == 1 && i < maxLoop)
-            {
-                var waveFormat = new WaveFormat(micSampleRate, 1);
-                var byteBuffer = new List<byte>();
-                using (this.waveIn = new WaveInEvent())
-                {
-                    waveIn.WaveFormat = waveFormat;
-                    waveIn.DataAvailable += (s, e_wi) =>
-                    {
-                        // mic 0 => default , có thể chọn tùy thích
-                        var audioByteArray = new byte[e_wi.BytesRecorded];
-                        Array.Copy(e_wi.Buffer, audioByteArray, e_wi.BytesRecorded);
-                        byteBuffer.AddRange(audioByteArray);
-                    };
-                    waveIn.StartRecording();
-                    Thread.Sleep(sleepTime);
-                    this.waveIn.StopRecording();
+            RecordingHelper.voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
+            RecordingHelper.sleepTime = int.Parse(ConfigurationManager.AppSettings.Get("sleepTime"));
+            RecordingHelper.micSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("micSampleRate"));
+            RecordingHelper.systemAudioSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("systemAudioSampleRate"));
+            RecordingHelper.currentProcessID = Process.GetCurrentProcess().Id;
+            RecordingHelper.currentProcessName = Process.GetCurrentProcess().ProcessName;
+            RecordingHelper.outputMicRecordFileName = "";
+            RecordingHelper.outputSystemRecordFileName = "";
+            RecordingHelper.threadMicRecordControl = 2; // 1 start, 2 stop
+            RecordingHelper.threadSystemAudioRecordControl = 2; // 1 start, 2 stop
+            RecordingHelper.checkBox_RecordFile_System = checkBox_RecordFile_System.Checked;
+            RecordingHelper.checkBox_RecordFile_Mic = checkBox_RecordFile_Mic.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_Vosk = checkBox_SystemAudio_Use_Vosk.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_MS = checkBox_SystemAudio_Use_MS.Checked;
+            RecordingHelper.checkBox_Mic_Use_Vosk = checkBox_Mic_Use_Vosk.Checked;
+            RecordingHelper.checkBox_Mic_Use_MS = checkBox_Mic_Use_MS.Checked;
 
-                    // save File
-                    var soundByteArray = byteBuffer.ToArray();
-                    string fileOutputName = this.outputMicRecordFileName + i.ToString() + ".wav";
-                    if (checkBox_RecordFile_System.Checked == true)
-                    {
-                        var waveFile = new WaveFileWriter(fileOutputName, waveFormat);
-                        waveFile.Write(soundByteArray, 0, soundByteArray.Length);
-                        waveFile.Flush();
-                        waveFile.Close();
-                    }
+            label_MSTranscript_Mic.Text = RecordingHelper.text_LabelVoskTranscriptSystemAudio;
+            label_MSTranscript_System.Text = RecordingHelper.text_LabelVoskTranscriptMicIn;
+            label_VoskTranscript_Mic.Text = RecordingHelper.text_LabelMSTranscriptSystemAudio;
+            label_VoskTranscript_System.Text = RecordingHelper.text_LabelMSTranscriptMicIn;
 
-                    // Transcript Mic using Vosk
-                    if (checkBox_Mic_Use_Vosk.Checked == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
-                    {
-                        var voskResult = recVosk.Result();
-                        Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
-                        var voskResultValue = JObject.Parse(voskResult)["text"];
-                        text_LabelVoskTranscriptMicIn += voskResultValue + " | ";
-                        Console.WriteLine(voskResultValue);
-                        //ThreadHelperClass.SetText(this, label_VoskTranscript_Mic, text_LabelVoskTranscriptMicIn);
-                        ThreadHelperClass.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn);
-                    }
-                    // Transcript Mic using MS / API
-                    else if (checkBox_Mic_Use_MS.Checked == true)
-                    {
-                        var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
-                        {
-                            MaxTimeout = -1,
-                        };
-                        var client = new RestClient(options);
-                        var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
-                        request.AlwaysMultipartFormData = true;
-                        request.AddFile("file", fileOutputName);
-                        RestResponse response = client.Execute(request);
-                        Console.WriteLine("API: " + response.Content);
-                        var jsonResult = JObject.Parse(response.Content);
-                        var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
-                        text_LabelMSTranscriptMicIn += result + " | ";
-                        ThreadHelperClass.SetText(this, richTextBox_MicIn_MS_Transcript, text_LabelMSTranscriptMicIn);
-                    }
-
-                    if (this.threadMicRecordControl == 2) return;
-                    i++;
-                }
-            }
-        }
-
-        void RecordSystemAudio()
-        {
-            int i = 0;
-            var recVosk = new VoskRecognizer(this.voskModel, systemAudioSampleRate);
-            while (threadSystemAudioRecordControl == 1 && i < maxLoop)
-            {
-                capture = new WasapiLoopbackCapture();
-                capture.WaveFormat = new WaveFormat(systemAudioSampleRate, 1);
-                var byteBuffer = new List<byte>();
-                // Capture Async dùng được, nhưng khó khăn khi làm transcript
-                //string fileOutputName = this.outputSystemRecordFileName + i.ToString() + ".wav";
-                //Console.WriteLine(fileOutputName);
-                //var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
-                //capture.DataAvailable += async (s, e_a) =>
-                //{
-                //    if (writer != null) {
-                //        Console.WriteLine("WasapiLoopbackCapture Buffer BytesRecorded: " + e_a.BytesRecorded);
-                //        if (checkBox_RecordFile_System.Checked == true) {
-                //            await writer.WriteAsync(e_a.Buffer, 0, e_a.BytesRecorded);
-                //            await writer.FlushAsync();
-                //        }
-                //    }
-                //};
-                // Capture không Async, dùng byte làm transcript tốt hơn
-                capture.DataAvailable += (s, e_a) =>
-                {
-                    var audioByteArray = new byte[e_a.BytesRecorded];
-                    Array.Copy(e_a.Buffer, audioByteArray, e_a.BytesRecorded);
-                    byteBuffer.AddRange(audioByteArray);
-                };
-                capture.RecordingStopped += (s, e) => { Console.WriteLine("Capture Recording Stopped"); };
-
-                capture.StartRecording();
-                Thread.Sleep(sleepTime);
-                this.capture.StopRecording();
-
-                var soundByteArray = byteBuffer.ToArray();
-
-                // Save file
-                string fileOutputName = this.outputSystemRecordFileName + i.ToString() + ".wav";
-                if (checkBox_RecordFile_System.Checked == true)
-                {
-                    Console.WriteLine(fileOutputName);
-                    var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
-                    writer.Write(soundByteArray, 0, soundByteArray.Length);
-                    writer.Flush();
-                    writer.Close();
-                }
-                // Transcript System Audio using Vosk
-                if (checkBox_SystemAudio_Use_Vosk.Checked == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
-                {
-                    var voskResult = recVosk.Result();
-                    Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
-                    var voskResultValue = JObject.Parse(voskResult)["text"];
-                    text_LabelVoskTranscriptSystemAudio += voskResultValue + " | ";
-                    Console.WriteLine(voskResultValue);
-                    //ThreadHelperClass.SetText(this, label_VoskTranscript_System, labelVoskTranscriptSystemAudio);
-                    ThreadHelperClass.SetText(this, richTextBox_SAudio_Vosk_Transcript, text_LabelVoskTranscriptSystemAudio);
-                }
-                // Transcript System Audio using MS
-                else if (checkBox_SystemAudio_Use_MS.Checked == true)
-                {
-                    var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
-                    {
-                        MaxTimeout = -1,
-                    };
-                    var client = new RestClient(options);
-                    var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
-                    request.AlwaysMultipartFormData = true;
-                    request.AddFile("file", fileOutputName);
-                    RestResponse response = client.Execute(request);
-                    Console.WriteLine("API: " + response.Content);
-                    var jsonResult = JObject.Parse(response.Content);
-                    var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
-                    text_LabelMSTranscriptSystemAudio += result + " | ";
-                    ThreadHelperClass.SetText(this, richTextBox_SAudio_MS_Transcript, text_LabelMSTranscriptSystemAudio);
-                }
-
-                if (this.threadSystemAudioRecordControl == 2)
-                {
-                    Console.WriteLine("RecordSystemAudio End");
-                    this.capture.Dispose();
-                    return;
-                }
-                i++;
-            }
+            this.textUpdate = new Thread(new ThreadStart(UpdateText));
+            this.textUpdate.IsBackground = true;
+            this.textUpdate.Start();
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void listBox_Micro_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }
@@ -226,12 +105,13 @@ namespace Forms_SystemAudioRecord_23
             {
                 dialog.Filter = "Wave files | *.part.";
                 if (dialog.ShowDialog() != DialogResult.OK) return;
-                outputSystemRecordFileName = dialog.FileName;
+                RecordingHelper.outputSystemRecordFileName = dialog.FileName;
             }
             button_Record.Enabled = false;
             buttonStop.Enabled = true;
-            this.threadSystemAudioRecordControl = 1;
-            this.systemAudioRecordThread = new Thread(new ThreadStart(RecordSystemAudio));
+            this.systemAudioRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordSystemAudio));
+            RecordingHelper.threadSystemAudioRecordControl = 1;
+            this.systemAudioRecordThread.IsBackground = true;
             this.systemAudioRecordThread.Start();
         }
 
@@ -239,13 +119,13 @@ namespace Forms_SystemAudioRecord_23
         {
             buttonStop.Enabled = false;
             button_Record.Enabled = true;
-            this.threadSystemAudioRecordControl = 2;
-            if (outputSystemRecordFileName == null) return;
+            RecordingHelper.threadSystemAudioRecordControl = 2;
+            if (RecordingHelper.outputSystemRecordFileName == null) return;
             if (checkBox_RecordFile_System.Checked == true)
             {
                 var processStartInfo = new ProcessStartInfo
                 {
-                    FileName = Path.GetDirectoryName(outputSystemRecordFileName),
+                    FileName = Path.GetDirectoryName(RecordingHelper.outputSystemRecordFileName),
                     UseShellExecute = true
                 };
                 Process.Start(processStartInfo);
@@ -259,12 +139,13 @@ namespace Forms_SystemAudioRecord_23
             {
                 dialog.Filter = "Wave files | *.part.";
                 if (dialog.ShowDialog() != DialogResult.OK) return;
-                this.outputMicRecordFileName = dialog.FileName;
+                RecordingHelper.outputMicRecordFileName = dialog.FileName;
             }
             button_RecordMic.Enabled = false;
             button_StopRecordMic.Enabled = true;
-            this.micRecordThread = new Thread(new ThreadStart(RecordMicIn));
-            this.threadMicRecordControl = 1;
+            this.micRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordMicIn));
+            RecordingHelper.threadMicRecordControl = 1;
+            this.micRecordThread.IsBackground = true;
             this.micRecordThread.Start();
         }
 
@@ -272,12 +153,7 @@ namespace Forms_SystemAudioRecord_23
         {
             button_StopRecordMic.Enabled = false;
             button_RecordMic.Enabled = true;
-            this.threadMicRecordControl = 2;
-        }
-
-        private void listBox_Micro_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            RecordingHelper.threadMicRecordControl = 2;
         }
 
         // 2 Enginee
@@ -285,40 +161,43 @@ namespace Forms_SystemAudioRecord_23
         {
             if(checkBox_SystemAudio_Use_MS.Checked == true)
                 checkBox_SystemAudio_Use_MS.Checked = !checkBox_SystemAudio_Use_Vosk.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_MS = checkBox_SystemAudio_Use_MS.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_Vosk = checkBox_SystemAudio_Use_Vosk.Checked;
         }
 
         private void checkBox_SystemAudio_Use_MS_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBox_SystemAudio_Use_Vosk.Checked == true)
                 checkBox_SystemAudio_Use_Vosk.Checked = !checkBox_SystemAudio_Use_MS.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_Vosk = checkBox_SystemAudio_Use_Vosk.Checked;
+            RecordingHelper.checkBox_SystemAudio_Use_MS = checkBox_SystemAudio_Use_MS.Checked;
         }
 
         private void checkBox_Mic_Use_Vosk_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBox_Mic_Use_MS.Checked == true)
                 checkBox_Mic_Use_MS.Checked = !checkBox_Mic_Use_Vosk.Checked;
+            RecordingHelper.checkBox_Mic_Use_MS = checkBox_Mic_Use_MS.Checked;
+            RecordingHelper.checkBox_Mic_Use_Vosk = checkBox_Mic_Use_Vosk.Checked;
         }
 
         private void checkBox_Mic_Use_MS_CheckedChanged(object sender, EventArgs e)
         {
             if(checkBox_Mic_Use_Vosk.Checked == true)
                 checkBox_Mic_Use_Vosk.Checked = !checkBox_Mic_Use_MS.Checked;
+            RecordingHelper.checkBox_Mic_Use_Vosk = checkBox_Mic_Use_Vosk.Checked;
+            RecordingHelper.checkBox_Mic_Use_MS = checkBox_Mic_Use_MS.Checked;
         }
-    }
 
-    public static class ThreadHelperClass
-    {
-        delegate void SetTextCallback(Form f, Control ctrl, string text);
-        public static void SetText(Form form, Control ctrl, string text)
+        private void UpdateText()
         {
-            if (ctrl.InvokeRequired)
+            while (true)
             {
-                SetTextCallback d = new SetTextCallback(SetText);
-                form.Invoke(d, new object[] { form, ctrl, text });
-            }
-            else
-            {
-                ctrl.Text = text;
+                ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptSystemAudio);
+                ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, RecordingHelper.text_LabelMSTranscriptSystemAudio);
+                ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptMicIn);
+                ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, RecordingHelper.text_LabelMSTranscriptMicIn);
+                Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
             }
         }
     }
