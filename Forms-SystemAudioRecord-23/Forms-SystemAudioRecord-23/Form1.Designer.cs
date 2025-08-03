@@ -83,7 +83,6 @@
             this.listBox_Speakers.Name = "listBox_Speakers";
             this.listBox_Speakers.Size = new System.Drawing.Size(263, 69);
             this.listBox_Speakers.TabIndex = 2;
-            this.listBox_Speakers.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // listBox_Micro
             // 
@@ -96,7 +95,6 @@
             this.listBox_Micro.Name = "listBox_Micro";
             this.listBox_Micro.Size = new System.Drawing.Size(263, 69);
             this.listBox_Micro.TabIndex = 3;
-            this.listBox_Micro.SelectedIndexChanged += new System.EventHandler(this.listBox_Micro_SelectedIndexChanged);
             // 
             // button_StopRecordMic
             // 
