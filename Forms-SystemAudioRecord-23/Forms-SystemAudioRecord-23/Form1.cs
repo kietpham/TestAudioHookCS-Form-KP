@@ -77,6 +77,8 @@ namespace Forms_SystemAudioRecord_23
             RecordingHelper.checkBox_SystemAudio_Use_MS = checkBox_SystemAudio_Use_MS.Checked;
             RecordingHelper.checkBox_Mic_Use_Vosk = checkBox_Mic_Use_Vosk.Checked;
             RecordingHelper.checkBox_Mic_Use_MS = checkBox_Mic_Use_MS.Checked;
+            RecordingHelper.serverPath = ConfigurationManager.AppSettings.Get("serverPath");
+            RecordingHelper.serverURL = ConfigurationManager.AppSettings.Get("serverURL");
 
             label_MSTranscript_Mic.Text = RecordingHelper.text_LabelVoskTranscriptSystemAudio;
             label_MSTranscript_System.Text = RecordingHelper.text_LabelVoskTranscriptMicIn;

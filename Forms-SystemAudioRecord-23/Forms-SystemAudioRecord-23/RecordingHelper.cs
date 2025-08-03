@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -23,6 +22,8 @@ namespace Forms_SystemAudioRecord_23
         public static int systemAudioSampleRate;
         public static int currentProcessID = 0;
         public static string currentProcessName;
+        public static string serverURL;
+        public static string serverPath;
 
         public static string text_LabelVoskTranscriptSystemAudio;
         public static string text_LabelVoskTranscriptMicIn;
@@ -102,12 +103,12 @@ namespace Forms_SystemAudioRecord_23
                 // Transcript System Audio using MS
                 else if (checkBox_SystemAudio_Use_MS == true)
                 {
-                    var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
+                    var options = new RestClientOptions(serverURL)
                     {
                         Timeout = new TimeSpan(0,15,0)
                     };
                     var client = new RestClient(options);
-                    var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
+                    var request = new RestRequest(serverPath, Method.Post);
                     request.AlwaysMultipartFormData = true;
                     request.AddFile("file", fileOutputName);
                     RestResponse response = client.Execute(request);
@@ -176,12 +177,12 @@ namespace Forms_SystemAudioRecord_23
                     // Transcript Mic using MS / API
                     else if (checkBox_Mic_Use_MS == true)
                     {
-                        var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
+                        var options = new RestClientOptions(serverURL)
                         {
                             Timeout = new TimeSpan(0, 15, 0)
                         };
                         var client = new RestClient(options);
-                        var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
+                        var request = new RestRequest(serverPath, Method.Post);
                         request.AlwaysMultipartFormData = true;
                         request.AddFile("file", fileOutputName);
                         RestResponse response = client.Execute(request);
@@ -210,30 +211,6 @@ namespace Forms_SystemAudioRecord_23
             {
                 ctrl.Text = text;
             }
-        }
-        // Obsoleted
-        public static bool CheckProcessRunning(int processID, string processName)
-        {
-            Process[] pName = Process.GetProcessesByName(processName);
-            if (pName.Length > 0)
-            {
-                try
-                {
-                    Process pID = Process.GetProcessById(processID);
-                }
-                catch
-                {
-                    Console.WriteLine("Main Process NOT Running...");
-                    return false;
-                }
-            }
-            else
-            {
-                Console.WriteLine("Main Process NOT Running...");
-                return false;
-            }
-            Console.WriteLine("Main Process IS Running...");
-            return true;
         }
     }
 }
