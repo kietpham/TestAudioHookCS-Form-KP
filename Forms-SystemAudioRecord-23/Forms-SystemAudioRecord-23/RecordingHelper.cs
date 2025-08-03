@@ -198,7 +198,10 @@ namespace Forms_SystemAudioRecord_23
                 }
             }
         }
+    }
 
+    public static class ThreadHelper
+    {
         delegate void SetTextCallback(Form f, Control ctrl, string text);
         public static void SetText(Form form, Control ctrl, string text)
         {
@@ -213,4 +216,4 @@ namespace Forms_SystemAudioRecord_23
             }
         }
     }
-}
+  }
