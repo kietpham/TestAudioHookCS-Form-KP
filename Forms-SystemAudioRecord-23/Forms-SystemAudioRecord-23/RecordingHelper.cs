@@ -45,7 +45,7 @@ namespace Forms_SystemAudioRecord_23
         {
             int i = 0;
             var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);
-            while (threadSystemAudioRecordControl == 1 && ThreadHelper.CheckProcessRunning(currentProcessID, currentProcessName))
+            while (threadSystemAudioRecordControl == 1)
             {
                 capture = new WasapiLoopbackCapture();
                 capture.WaveFormat = new WaveFormat(systemAudioSampleRate, 1);
@@ -104,7 +104,7 @@ namespace Forms_SystemAudioRecord_23
                 {
                     var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
                     {
-                        MaxTimeout = -1,
+                        Timeout = new TimeSpan(0,15,0)
                     };
                     var client = new RestClient(options);
                     var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
@@ -134,7 +134,7 @@ namespace Forms_SystemAudioRecord_23
             Console.WriteLine("RecordMicIn");
             int i = 0;
             var recVosk = new VoskRecognizer(voskModel, micSampleRate);
-            while (threadMicRecordControl == 1 && ThreadHelper.CheckProcessRunning(currentProcessID, currentProcessName))
+            while (threadMicRecordControl == 1)
             {
                 var waveFormat = new WaveFormat(micSampleRate, 1);
                 var byteBuffer = new List<byte>();
@@ -178,7 +178,7 @@ namespace Forms_SystemAudioRecord_23
                     {
                         var options = new RestClientOptions(ConfigurationManager.AppSettings.Get("serverURL"))
                         {
-                            MaxTimeout = -1,
+                            Timeout = new TimeSpan(0, 15, 0)
                         };
                         var client = new RestClient(options);
                         var request = new RestRequest(ConfigurationManager.AppSettings.Get("serverPath"), Method.Post);
@@ -197,10 +197,7 @@ namespace Forms_SystemAudioRecord_23
                 }
             }
         }
-    }
 
-    public static class ThreadHelper
-    {
         delegate void SetTextCallback(Form f, Control ctrl, string text);
         public static void SetText(Form form, Control ctrl, string text)
         {
@@ -214,6 +211,7 @@ namespace Forms_SystemAudioRecord_23
                 ctrl.Text = text;
             }
         }
+        // Obsoleted
         public static bool CheckProcessRunning(int processID, string processName)
         {
             Process[] pName = Process.GetProcessesByName(processName);
