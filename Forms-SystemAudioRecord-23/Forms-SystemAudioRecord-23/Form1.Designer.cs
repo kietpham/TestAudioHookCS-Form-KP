@@ -192,7 +192,7 @@
             this.richTextBox_SAudio_Vosk_Transcript.Name = "richTextBox_SAudio_Vosk_Transcript";
             this.richTextBox_SAudio_Vosk_Transcript.Size = new System.Drawing.Size(827, 19);
             this.richTextBox_SAudio_Vosk_Transcript.TabIndex = 12;
-            this.richTextBox_SAudio_Vosk_Transcript.Text = "Vosk Transcript";
+            this.richTextBox_SAudio_Vosk_Transcript.Text = "Vosk Transcript - Obsoleted";
             // 
             // richTextBox_SAudio_MS_Transcript
             // 
@@ -220,7 +220,7 @@
             this.richTextBox_MicIn_Vosk_Transcript.Name = "richTextBox_MicIn_Vosk_Transcript";
             this.richTextBox_MicIn_Vosk_Transcript.Size = new System.Drawing.Size(827, 20);
             this.richTextBox_MicIn_Vosk_Transcript.TabIndex = 14;
-            this.richTextBox_MicIn_Vosk_Transcript.Text = "Vosk Transcript";
+            this.richTextBox_MicIn_Vosk_Transcript.Text = "Vosk Transcript  - Obsoleted";
             // 
             // checkBox_SystemAudio_Use_Vosk
             // 
