@@ -74,13 +74,17 @@ namespace ClassLibrary_RecordingHelper_Net4._8
 
                 // Save file
                 string fileOutputName = outputSystemRecordFileName + i.ToString() + ".wav";
-                if (checkBox_RecordFile_System == true)
+                try
                 {
-                    var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
-                    writer.Write(soundByteArray, 0, soundByteArray.Length);
-                    writer.Flush();
-                    writer.Close();
+                    if (checkBox_RecordFile_System == true)
+                    {
+                        var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
+                        writer.Write(soundByteArray, 0, soundByteArray.Length);
+                        writer.Flush();
+                        writer.Close();
+                    }
                 }
+                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                 // Transcript System Audio using Vosk - Obsoleted
                 //if (checkBox_SystemAudio_Use_Vosk == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                 //{
@@ -144,13 +148,17 @@ namespace ClassLibrary_RecordingHelper_Net4._8
                     // save File
                     var soundByteArray = byteBuffer.ToArray();
                     string fileOutputName = outputMicRecordFileName + i.ToString() + ".wav";
-                    if (checkBox_RecordFile_Mic == true)
+                    try
                     {
-                        var waveFile = new WaveFileWriter(fileOutputName, waveFormat);
-                        waveFile.Write(soundByteArray, 0, soundByteArray.Length);
-                        waveFile.Flush();
-                        waveFile.Close();
+                        if (checkBox_RecordFile_Mic == true)
+                        {
+                            var waveFile = new WaveFileWriter(fileOutputName, waveFormat);
+                            waveFile.Write(soundByteArray, 0, soundByteArray.Length);
+                            waveFile.Flush();
+                            waveFile.Close();
+                        }
                     }
+                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
                     // Transcript Mic using Vosk - Obsoleted
                     //if (checkBox_Mic_Use_Vosk == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                     //{
