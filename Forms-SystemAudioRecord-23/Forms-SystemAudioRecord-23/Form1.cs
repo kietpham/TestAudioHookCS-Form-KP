@@ -64,6 +64,7 @@ namespace Forms_SystemAudioRecord_23
             textUpdate.Start();
         }
 
+        // System Audio Record
         private void button_Record_Click(object sender, EventArgs e)
         {
             var dialog = new SaveFileDialog();
@@ -75,16 +76,23 @@ namespace Forms_SystemAudioRecord_23
             }
             button_Record.Enabled = false;
             buttonStop.Enabled = true;
-            systemAudioRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordSystemAudio));
-            RecordingHelper.threadSystemAudioRecordControl = 1;
-            systemAudioRecordThread.IsBackground = true;
-            systemAudioRecordThread.Start();
+
+            //systemAudioRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordSystemAudio));
+            //RecordingHelper.threadSystemAudioRecordControl = 1;
+            //systemAudioRecordThread.IsBackground = true;
+            //systemAudioRecordThread.Start();
+
+            RecordingHelper.StartRecordSystemAudio();
         }
 
+        // System Audio Stop Record
         private void buttonStop_Click(object sender, EventArgs e)
         {
             buttonStop.Enabled = false;
+
             RecordingHelper.threadSystemAudioRecordControl = 2;
+            RecordingHelper.StoptRecordSystemAudio();
+
             if (RecordingHelper.outputSystemRecordFileName == null) return;
             Thread.Sleep(RecordingHelper.sleepTime + 500);
             button_Record.Enabled = true;
@@ -99,6 +107,7 @@ namespace Forms_SystemAudioRecord_23
             }
         }
 
+        // Default Mic record
         private void button_RecordMic_Click(object sender, EventArgs e)
         {
             var dialog = new SaveFileDialog();
@@ -110,16 +119,23 @@ namespace Forms_SystemAudioRecord_23
             }
             button_RecordMic.Enabled = false;
             button_StopRecordMic.Enabled = true;
-            micRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordMicIn));
-            RecordingHelper.threadMicRecordControl = 1;
-            micRecordThread.IsBackground = true;
-            micRecordThread.Start();
+
+            //micRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordMicIn));
+            //RecordingHelper.threadMicRecordControl = 1;
+            //micRecordThread.IsBackground = true;
+            //micRecordThread.Start();
+
+            RecordingHelper.StartRecordMicIn();
         }
 
+        // Default Mic stop record
         private void button_StopRecordMic_Click(object sender, EventArgs e)
         {
             button_StopRecordMic.Enabled = false;
+
             RecordingHelper.threadMicRecordControl = 2;
+            RecordingHelper.StopRecordMicIn();
+
             Thread.Sleep(RecordingHelper.sleepTime + 500);
             button_RecordMic.Enabled = true;
         }
@@ -160,11 +176,20 @@ namespace Forms_SystemAudioRecord_23
         {
             while (true)
             {
-                ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptSystemAudio);
-                ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, RecordingHelper.text_LabelMSTranscriptSystemAudio);
-                ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptMicIn);
-                ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, RecordingHelper.text_LabelMSTranscriptMicIn);
+                //ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptSystemAudio);  // Vosk is Obsoleted
+                //ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptMicIn); // Vosk is Obsoleted
+
+                //ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, RecordingHelper.text_LabelMSTranscriptSystemAudio);
+                //ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, RecordingHelper.text_LabelMSTranscriptMicIn);
+                var s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
+                var s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
+                ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, s_MSTranscriptSystemAudio);
+                ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, s_MSTranscriptMicIn);
+
                 Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
+
+                if (s_MSTranscriptSystemAudio.Length > 10000) RecordingHelper.SetMSTranscriptSystemAudio("");
+                if (s_MSTranscriptMicIn.Length > 10000) RecordingHelper.SetMSTranscriptMicIn("");
             }
         }
     }

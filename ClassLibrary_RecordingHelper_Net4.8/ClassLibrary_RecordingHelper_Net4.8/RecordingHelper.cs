@@ -9,7 +9,7 @@ namespace ClassLibrary_RecordingHelper_Net4._8
 {
     public static class RecordingHelper
     {
-        //public static Model voskModel;
+        //public static Model voskModel;    // Obsoleted
         public static int sleepTime;
         public static int micSampleRate;
         public static int systemAudioSampleRate;
@@ -17,22 +17,24 @@ namespace ClassLibrary_RecordingHelper_Net4._8
         public static string currentProcessName;
         public static string serverURL;
         public static string serverPath;
-        public static string text_LabelVoskTranscriptSystemAudio;   // Transcript text add in during run
-        public static string text_LabelVoskTranscriptMicIn;         // Transcript text add in during run
-        public static string text_LabelMSTranscriptSystemAudio;     // Transcript text add in during run
-        public static string text_LabelMSTranscriptMicIn;           // Transcript text add in during run
         public static string outputMicRecordFileName = "";
         public static string outputSystemRecordFileName = "";
+        public static string text_LabelVoskTranscriptSystemAudio = "";   // Transcript text add in during run
+        public static string text_LabelVoskTranscriptMicIn = "";         // Transcript text add in during run
+        public static string text_LabelMSTranscriptSystemAudio = "";     // Transcript text add in during run
+        public static string text_LabelMSTranscriptMicIn = "";           // Transcript text add in during run
         public static WasapiLoopbackCapture capture;
         public static WaveInEvent waveIn;
-        public static int threadMicRecordControl; // 1 start, 2 stop
-        public static int threadSystemAudioRecordControl; // 1 start, 2 stop
+        public static int threadMicRecordControl;   // 1 start, 2 stop
+        public static int threadSystemAudioRecordControl;   // 1 start, 2 stop
         public static bool checkBox_RecordFile_System;
         public static bool checkBox_RecordFile_Mic;
         public static bool checkBox_SystemAudio_Use_Vosk;
         public static bool checkBox_SystemAudio_Use_MS;
         public static bool checkBox_Mic_Use_Vosk;
         public static bool checkBox_Mic_Use_MS;
+        public static Thread static_systemAudioRecordThread;
+        public static Thread static_micRecordThread;
         public static void RecordSystemAudio()
         {
             Console.WriteLine("RecordSystemAudio");
@@ -190,6 +192,49 @@ namespace ClassLibrary_RecordingHelper_Net4._8
                     i++;
                 }
             }
+        }
+
+        public static void StartRecordSystemAudio()
+        {
+            static_systemAudioRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordSystemAudio));
+            RecordingHelper.threadSystemAudioRecordControl = 1;
+            static_systemAudioRecordThread.IsBackground = true;
+            static_systemAudioRecordThread.Start();
+        }
+        public static void StoptRecordSystemAudio()
+        {
+            RecordingHelper.threadSystemAudioRecordControl = 2;
+            Thread.Sleep(RecordingHelper.sleepTime + 500);
+            static_systemAudioRecordThread.Abort();
+        }
+        public static void StartRecordMicIn()
+        {
+            static_micRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordMicIn));
+            RecordingHelper.threadMicRecordControl = 1;
+            static_micRecordThread.IsBackground = true;
+            static_micRecordThread.Start();
+        }
+        public static void StopRecordMicIn()
+        {
+            RecordingHelper.threadMicRecordControl = 2;
+            Thread.Sleep(RecordingHelper.sleepTime + 500);
+            static_micRecordThread.Abort();
+        }
+        public static string GetMSTranscriptSystemAudio()
+        {
+            return text_LabelMSTranscriptSystemAudio;
+        }
+        public static void SetMSTranscriptSystemAudio(string value)
+        {
+            text_LabelMSTranscriptSystemAudio = value;
+        }
+        public static string GetMSTranscriptMicIn()
+        {
+            return text_LabelMSTranscriptMicIn;
+        }
+        public static void SetMSTranscriptMicIn(string value)
+        {
+            text_LabelMSTranscriptMicIn = value;
         }
     }
 }
