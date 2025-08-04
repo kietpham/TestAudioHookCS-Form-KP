@@ -1,13 +1,17 @@
 ﻿using NAudio.Wave;
 using Newtonsoft.Json.Linq;
 using RestSharp;
-//using Vosk;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Windows.Forms;
+using Vosk;
 
-namespace ClassLibrary_RecordingHelper_Net8
+namespace Forms_SystemAudioRecord_23
 {
-    public static class RecordingHelper
+    public static class RecordingHelperLocalOld
     {
-        //public static Model voskModel;
+        public static Model voskModel;
         public static int sleepTime;
         public static int micSampleRate;
         public static int systemAudioSampleRate;
@@ -16,10 +20,10 @@ namespace ClassLibrary_RecordingHelper_Net8
         public static string serverURL;
         public static string serverPath;
 
-        public static string text_LabelVoskTranscriptSystemAudio;   // Transcript text add in during run
-        public static string text_LabelVoskTranscriptMicIn;         // Transcript text add in during run
-        public static string text_LabelMSTranscriptSystemAudio;     // Transcript text add in during run
-        public static string text_LabelMSTranscriptMicIn;           // Transcript text add in during run
+        public static string text_LabelVoskTranscriptSystemAudio;
+        public static string text_LabelVoskTranscriptMicIn;
+        public static string text_LabelMSTranscriptSystemAudio;
+        public static string text_LabelMSTranscriptMicIn;
         public static string outputMicRecordFileName = "";
         public static string outputSystemRecordFileName = "";
         public static WasapiLoopbackCapture capture;
@@ -36,7 +40,7 @@ namespace ClassLibrary_RecordingHelper_Net8
         public static void RecordSystemAudio()
         {
             int i = 0;
-            //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);
+            var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);
             while (threadSystemAudioRecordControl == 1)
             {
                 capture = new WasapiLoopbackCapture();
@@ -81,22 +85,22 @@ namespace ClassLibrary_RecordingHelper_Net8
                     writer.Flush();
                     writer.Close();
                 }
-                // Transcript System Audio using Vosk - Obsoleted
-                //if (checkBox_SystemAudio_Use_Vosk == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
-                //{
-                //    var voskResult = recVosk.Result();
-                //    Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
-                //    var voskResultValue = JObject.Parse(voskResult)["text"];
-                //    text_LabelVoskTranscriptSystemAudio += voskResultValue + " | ";
-                //    Console.WriteLine(voskResultValue);
-                //    //ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, text_LabelVoskTranscriptSystemAudio);  // Move out to main Form
-                //}
+                // Transcript System Audio using Vosk
+                if (checkBox_SystemAudio_Use_Vosk == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
+                {
+                    var voskResult = recVosk.Result();
+                    Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
+                    var voskResultValue = JObject.Parse(voskResult)["text"];
+                    text_LabelVoskTranscriptSystemAudio += voskResultValue + " | ";
+                    Console.WriteLine(voskResultValue);
+                    //ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, text_LabelVoskTranscriptSystemAudio);  // Move out to main Form
+                }
                 // Transcript System Audio using MS
-                if (checkBox_SystemAudio_Use_MS == true)
+                else if (checkBox_SystemAudio_Use_MS == true)
                 {
                     var options = new RestClientOptions(serverURL)
                     {
-                        Timeout = new TimeSpan(0, 15, 0)
+                        Timeout = new TimeSpan(0,15,0)
                     };
                     var client = new RestClient(options);
                     var request = new RestRequest(serverPath, Method.Post);
@@ -125,7 +129,7 @@ namespace ClassLibrary_RecordingHelper_Net8
         {
             Console.WriteLine("RecordMicIn");
             int i = 0;
-            //var recVosk = new VoskRecognizer(voskModel, micSampleRate);
+            var recVosk = new VoskRecognizer(voskModel, micSampleRate);
             while (threadMicRecordControl == 1)
             {
                 var waveFormat = new WaveFormat(micSampleRate, 1);
@@ -133,10 +137,9 @@ namespace ClassLibrary_RecordingHelper_Net8
                 using (waveIn = new WaveInEvent())
                 {
                     waveIn.WaveFormat = waveFormat;
-                    // mic 0 => default , có thể chọn tùy thích
-                    waveIn.DeviceNumber = 0;
                     waveIn.DataAvailable += (s, e_wi) =>
                     {
+                        // mic 0 => default , có thể chọn tùy thích
                         var audioByteArray = new byte[e_wi.BytesRecorded];
                         Array.Copy(e_wi.Buffer, audioByteArray, e_wi.BytesRecorded);
                         byteBuffer.AddRange(audioByteArray);
@@ -156,18 +159,18 @@ namespace ClassLibrary_RecordingHelper_Net8
                         waveFile.Close();
                     }
 
-                    // Transcript Mic using Vosk - Obsoleted
-                    //if (checkBox_Mic_Use_Vosk == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
-                    //{
-                    //    var voskResult = recVosk.Result();
-                    //    Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
-                    //    var voskResultValue = JObject.Parse(voskResult)["text"];
-                    //    text_LabelVoskTranscriptMicIn += voskResultValue + " | ";
-                    //    Console.WriteLine(voskResultValue);
-                    //    //ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn); // Move out to main Form
-                    //}
+                    // Transcript Mic using Vosk
+                    if (checkBox_Mic_Use_Vosk == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
+                    {
+                        var voskResult = recVosk.Result();
+                        Console.WriteLine("recVosk: " + soundByteArray.Length.ToString() + voskResult);
+                        var voskResultValue = JObject.Parse(voskResult)["text"];
+                        text_LabelVoskTranscriptMicIn += voskResultValue + " | ";
+                        Console.WriteLine(voskResultValue);
+                        //ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn); // Move out to main Form
+                    }
                     // Transcript Mic using MS / API
-                    if (checkBox_Mic_Use_MS == true)
+                    else if (checkBox_Mic_Use_MS == true)
                     {
                         var options = new RestClientOptions(serverURL)
                         {
@@ -190,19 +193,22 @@ namespace ClassLibrary_RecordingHelper_Net8
                 }
             }
         }
-
-        //delegate void SetTextCallback(Form f, Control ctrl, string text);
-        //public static void SetText(Form form, Control ctrl, string text)
-        //{
-        //    if (ctrl.InvokeRequired)
-        //    {
-        //        SetTextCallback d = new SetTextCallback(SetText);
-        //        form.Invoke(d, new object[] { form, ctrl, text });
-        //    }
-        //    else
-        //    {
-        //        ctrl.Text = text;
-        //    }
-        //}
     }
-}
+
+    public static class ThreadHelper
+    {
+        delegate void SetTextCallback(Form f, Control ctrl, string text);
+        public static void SetText(Form form, Control ctrl, string text)
+        {
+            if (ctrl.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(SetText);
+                form.Invoke(d, new object[] { form, ctrl, text });
+            }
+            else
+            {
+                ctrl.Text = text;
+            }
+        }
+    }
+  }

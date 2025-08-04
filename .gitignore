@@ -54,3 +54,5 @@ TestResult.xml
 nunit-*.xml
 /Forms-SystemAudioRecord-23/.vs
 /ClassLibrary_RecordingHelper_Net8/.vs
+/ClassLibrary_RecordingHelper_Net4.8/.vs
+/ClassLibrary_RecordingHelper_Net4.8/packages

@@ -1,4 +1,5 @@
-﻿using NAudio.Wave;
+﻿using ClassLibrary_RecordingHelper_Net4._8;
+using NAudio.Wave;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
@@ -34,7 +35,7 @@ namespace Forms_SystemAudioRecord_23
                 Console.WriteLine(directSoundOutList[i].Description.ToString());
                 listBox_Speakers.Items.Add(directSoundOutList[i].Description);
             }
-            RecordingHelper.voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
+            //RecordingHelper.voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
             RecordingHelper.sleepTime = int.Parse(ConfigurationManager.AppSettings.Get("sleepTime"));
             RecordingHelper.micSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("micSampleRate"));
             RecordingHelper.systemAudioSampleRate = int.Parse(ConfigurationManager.AppSettings.Get("systemAudioSampleRate"));
