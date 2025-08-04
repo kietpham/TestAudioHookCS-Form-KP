@@ -84,9 +84,10 @@ namespace Forms_SystemAudioRecord_23
         private void buttonStop_Click(object sender, EventArgs e)
         {
             buttonStop.Enabled = false;
-            button_Record.Enabled = true;
             RecordingHelper.threadSystemAudioRecordControl = 2;
             if (RecordingHelper.outputSystemRecordFileName == null) return;
+            Thread.Sleep(RecordingHelper.sleepTime + 500);
+            button_Record.Enabled = true;
             if (checkBox_RecordFile_System.Checked == true)
             {
                 var processStartInfo = new ProcessStartInfo
@@ -118,8 +119,9 @@ namespace Forms_SystemAudioRecord_23
         private void button_StopRecordMic_Click(object sender, EventArgs e)
         {
             button_StopRecordMic.Enabled = false;
-            button_RecordMic.Enabled = true;
             RecordingHelper.threadMicRecordControl = 2;
+            Thread.Sleep(RecordingHelper.sleepTime + 500);
+            button_RecordMic.Enabled = true;
         }
 
         private void checkBox_SystemAudio_Use_Vosk_CheckedChanged(object sender, EventArgs e)
