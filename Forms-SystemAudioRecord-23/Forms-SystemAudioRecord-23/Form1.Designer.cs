@@ -92,7 +92,7 @@
             this.listBox_Micro.ItemHeight = 16;
             this.listBox_Micro.Items.AddRange(new object[] {
             "ListBox Micro"});
-            this.listBox_Micro.Location = new System.Drawing.Point(13, 362);
+            this.listBox_Micro.Location = new System.Drawing.Point(13, 299);
             this.listBox_Micro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.listBox_Micro.Name = "listBox_Micro";
             this.listBox_Micro.Size = new System.Drawing.Size(349, 84);
@@ -100,7 +100,7 @@
             // 
             // button_StopRecordMic
             // 
-            this.button_StopRecordMic.Location = new System.Drawing.Point(368, 416);
+            this.button_StopRecordMic.Location = new System.Drawing.Point(368, 353);
             this.button_StopRecordMic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_StopRecordMic.Name = "button_StopRecordMic";
             this.button_StopRecordMic.Size = new System.Drawing.Size(141, 30);
@@ -111,7 +111,7 @@
             // 
             // button_RecordMic
             // 
-            this.button_RecordMic.Location = new System.Drawing.Point(368, 388);
+            this.button_RecordMic.Location = new System.Drawing.Point(368, 325);
             this.button_RecordMic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button_RecordMic.Name = "button_RecordMic";
             this.button_RecordMic.Size = new System.Drawing.Size(141, 30);
@@ -141,7 +141,7 @@
             // label_MSTranscript_Mic
             // 
             this.label_MSTranscript_Mic.AutoSize = true;
-            this.label_MSTranscript_Mic.Location = new System.Drawing.Point(520, 388);
+            this.label_MSTranscript_Mic.Location = new System.Drawing.Point(520, 325);
             this.label_MSTranscript_Mic.Name = "label_MSTranscript_Mic";
             this.label_MSTranscript_Mic.Size = new System.Drawing.Size(115, 16);
             this.label_MSTranscript_Mic.TabIndex = 9;
@@ -150,7 +150,7 @@
             // label_VoskTranscript_Mic
             // 
             this.label_VoskTranscript_Mic.AutoSize = true;
-            this.label_VoskTranscript_Mic.Location = new System.Drawing.Point(520, 362);
+            this.label_VoskTranscript_Mic.Location = new System.Drawing.Point(520, 299);
             this.label_VoskTranscript_Mic.Name = "label_VoskTranscript_Mic";
             this.label_VoskTranscript_Mic.Size = new System.Drawing.Size(101, 16);
             this.label_VoskTranscript_Mic.TabIndex = 8;
@@ -176,7 +176,7 @@
             this.checkBox_RecordFile_Mic.Checked = true;
             this.checkBox_RecordFile_Mic.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_RecordFile_Mic.Enabled = false;
-            this.checkBox_RecordFile_Mic.Location = new System.Drawing.Point(368, 362);
+            this.checkBox_RecordFile_Mic.Location = new System.Drawing.Point(368, 299);
             this.checkBox_RecordFile_Mic.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_RecordFile_Mic.Name = "checkBox_RecordFile_Mic";
             this.checkBox_RecordFile_Mic.Size = new System.Drawing.Size(99, 20);
@@ -186,17 +186,18 @@
             // 
             // richTextBox_SAudio_Vosk_Transcript
             // 
+            this.richTextBox_SAudio_Vosk_Transcript.Enabled = false;
             this.richTextBox_SAudio_Vosk_Transcript.Location = new System.Drawing.Point(13, 106);
-            this.richTextBox_SAudio_Vosk_Transcript.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox_SAudio_Vosk_Transcript.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox_SAudio_Vosk_Transcript.Name = "richTextBox_SAudio_Vosk_Transcript";
-            this.richTextBox_SAudio_Vosk_Transcript.Size = new System.Drawing.Size(827, 84);
+            this.richTextBox_SAudio_Vosk_Transcript.Size = new System.Drawing.Size(827, 19);
             this.richTextBox_SAudio_Vosk_Transcript.TabIndex = 12;
             this.richTextBox_SAudio_Vosk_Transcript.Text = "Vosk Transcript";
             // 
             // richTextBox_SAudio_MS_Transcript
             // 
-            this.richTextBox_SAudio_MS_Transcript.Location = new System.Drawing.Point(13, 198);
-            this.richTextBox_SAudio_MS_Transcript.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox_SAudio_MS_Transcript.Location = new System.Drawing.Point(13, 133);
+            this.richTextBox_SAudio_MS_Transcript.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox_SAudio_MS_Transcript.Name = "richTextBox_SAudio_MS_Transcript";
             this.richTextBox_SAudio_MS_Transcript.Size = new System.Drawing.Size(827, 157);
             this.richTextBox_SAudio_MS_Transcript.TabIndex = 13;
@@ -204,19 +205,20 @@
             // 
             // richTextBox_MicIn_MS_Transcript
             // 
-            this.richTextBox_MicIn_MS_Transcript.Location = new System.Drawing.Point(13, 545);
-            this.richTextBox_MicIn_MS_Transcript.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox_MicIn_MS_Transcript.Location = new System.Drawing.Point(13, 418);
+            this.richTextBox_MicIn_MS_Transcript.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox_MicIn_MS_Transcript.Name = "richTextBox_MicIn_MS_Transcript";
-            this.richTextBox_MicIn_MS_Transcript.Size = new System.Drawing.Size(827, 120);
+            this.richTextBox_MicIn_MS_Transcript.Size = new System.Drawing.Size(827, 144);
             this.richTextBox_MicIn_MS_Transcript.TabIndex = 15;
             this.richTextBox_MicIn_MS_Transcript.Text = "MS/API Transcript";
             // 
             // richTextBox_MicIn_Vosk_Transcript
             // 
-            this.richTextBox_MicIn_Vosk_Transcript.Location = new System.Drawing.Point(13, 453);
-            this.richTextBox_MicIn_Vosk_Transcript.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.richTextBox_MicIn_Vosk_Transcript.Enabled = false;
+            this.richTextBox_MicIn_Vosk_Transcript.Location = new System.Drawing.Point(13, 390);
+            this.richTextBox_MicIn_Vosk_Transcript.Margin = new System.Windows.Forms.Padding(4);
             this.richTextBox_MicIn_Vosk_Transcript.Name = "richTextBox_MicIn_Vosk_Transcript";
-            this.richTextBox_MicIn_Vosk_Transcript.Size = new System.Drawing.Size(827, 84);
+            this.richTextBox_MicIn_Vosk_Transcript.Size = new System.Drawing.Size(827, 20);
             this.richTextBox_MicIn_Vosk_Transcript.TabIndex = 14;
             this.richTextBox_MicIn_Vosk_Transcript.Text = "Vosk Transcript";
             // 
@@ -254,7 +256,7 @@
             this.checkBox_Mic_Use_MS.Checked = true;
             this.checkBox_Mic_Use_MS.CheckState = System.Windows.Forms.CheckState.Checked;
             this.checkBox_Mic_Use_MS.Enabled = false;
-            this.checkBox_Mic_Use_MS.Location = new System.Drawing.Point(643, 386);
+            this.checkBox_Mic_Use_MS.Location = new System.Drawing.Point(643, 323);
             this.checkBox_Mic_Use_MS.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_Mic_Use_MS.Name = "checkBox_Mic_Use_MS";
             this.checkBox_Mic_Use_MS.Size = new System.Drawing.Size(78, 20);
@@ -267,7 +269,7 @@
             // 
             this.checkBox_Mic_Use_Vosk.AutoSize = true;
             this.checkBox_Mic_Use_Vosk.Enabled = false;
-            this.checkBox_Mic_Use_Vosk.Location = new System.Drawing.Point(643, 361);
+            this.checkBox_Mic_Use_Vosk.Location = new System.Drawing.Point(643, 298);
             this.checkBox_Mic_Use_Vosk.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.checkBox_Mic_Use_Vosk.Name = "checkBox_Mic_Use_Vosk";
             this.checkBox_Mic_Use_Vosk.Size = new System.Drawing.Size(88, 20);
@@ -280,7 +282,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(857, 679);
+            this.ClientSize = new System.Drawing.Size(857, 579);
             this.Controls.Add(this.checkBox_Mic_Use_MS);
             this.Controls.Add(this.checkBox_Mic_Use_Vosk);
             this.Controls.Add(this.checkBox_SystemAudio_Use_MS);

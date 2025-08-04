@@ -179,8 +179,6 @@ namespace Forms_SystemAudioRecord_23
                 //ThreadHelper.SetText(this, richTextBox_SAudio_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptSystemAudio);  // Vosk is Obsoleted
                 //ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, RecordingHelper.text_LabelVoskTranscriptMicIn); // Vosk is Obsoleted
 
-                //ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, RecordingHelper.text_LabelMSTranscriptSystemAudio);
-                //ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, RecordingHelper.text_LabelMSTranscriptMicIn);
                 var s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
                 var s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
                 ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, s_MSTranscriptSystemAudio);
@@ -188,8 +186,8 @@ namespace Forms_SystemAudioRecord_23
 
                 Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
 
-                if (s_MSTranscriptSystemAudio.Length > 10000) RecordingHelper.SetMSTranscriptSystemAudio("");
-                if (s_MSTranscriptMicIn.Length > 10000) RecordingHelper.SetMSTranscriptMicIn("");
+                if (s_MSTranscriptSystemAudio.Length > 500000) RecordingHelper.SetMSTranscriptSystemAudio("");
+                if (s_MSTranscriptMicIn.Length > 500000) RecordingHelper.SetMSTranscriptMicIn("");
             }
         }
     }
