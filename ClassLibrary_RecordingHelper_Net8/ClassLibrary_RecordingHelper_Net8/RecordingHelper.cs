@@ -15,7 +15,6 @@ namespace ClassLibrary_RecordingHelper_Net8
         public static string currentProcessName;
         public static string serverURL;
         public static string serverPath;
-
         public static string text_LabelVoskTranscriptSystemAudio;   // Transcript text add in during run
         public static string text_LabelVoskTranscriptMicIn;         // Transcript text add in during run
         public static string text_LabelMSTranscriptSystemAudio;     // Transcript text add in during run
@@ -26,7 +25,6 @@ namespace ClassLibrary_RecordingHelper_Net8
         public static WaveInEvent waveIn;
         public static int threadMicRecordControl; // 1 start, 2 stop
         public static int threadSystemAudioRecordControl; // 1 start, 2 stop
-
         public static bool checkBox_RecordFile_System;
         public static bool checkBox_RecordFile_Mic;
         public static bool checkBox_SystemAudio_Use_Vosk;
@@ -35,8 +33,9 @@ namespace ClassLibrary_RecordingHelper_Net8
         public static bool checkBox_Mic_Use_MS;
         public static void RecordSystemAudio()
         {
+            Console.WriteLine("RecordSystemAudio");
             int i = 0;
-            //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);
+            //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);   // Obsoleted
             while (threadSystemAudioRecordControl == 1)
             {
                 capture = new WasapiLoopbackCapture();
@@ -75,7 +74,6 @@ namespace ClassLibrary_RecordingHelper_Net8
                 string fileOutputName = outputSystemRecordFileName + i.ToString() + ".wav";
                 if (checkBox_RecordFile_System == true)
                 {
-                    Console.WriteLine(fileOutputName);
                     var writer = new WaveFileWriter(fileOutputName, capture.WaveFormat);
                     writer.Write(soundByteArray, 0, soundByteArray.Length);
                     writer.Flush();
@@ -103,29 +101,24 @@ namespace ClassLibrary_RecordingHelper_Net8
                     request.AlwaysMultipartFormData = true;
                     request.AddFile("file", fileOutputName);
                     RestResponse response = client.Execute(request);
-                    Console.WriteLine("API: " + response.Content);
+                    //Console.WriteLine("API: " + response.Content);
                     var jsonResult = JObject.Parse(response.Content);
                     var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
                     text_LabelMSTranscriptSystemAudio += result + " | ";
-                    //ThreadHelper.SetText(this, richTextBox_SAudio_MS_Transcript, text_LabelMSTranscriptSystemAudio);  // Move out to main Form
                 }
-
                 if (threadSystemAudioRecordControl == 2)
                 {
-                    Console.WriteLine("RecordSystemAudio End");
                     capture.Dispose();
                     return;
                 }
                 i++;
             }
         }
-
-
         public static void RecordMicIn()
         {
             Console.WriteLine("RecordMicIn");
             int i = 0;
-            //var recVosk = new VoskRecognizer(voskModel, micSampleRate);
+            //var recVosk = new VoskRecognizer(voskModel, micSampleRate);   // Obsoleted
             while (threadMicRecordControl == 1)
             {
                 var waveFormat = new WaveFormat(micSampleRate, 1);
@@ -155,7 +148,6 @@ namespace ClassLibrary_RecordingHelper_Net8
                         waveFile.Flush();
                         waveFile.Close();
                     }
-
                     // Transcript Mic using Vosk - Obsoleted
                     //if (checkBox_Mic_Use_Vosk == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                     //{
@@ -164,7 +156,6 @@ namespace ClassLibrary_RecordingHelper_Net8
                     //    var voskResultValue = JObject.Parse(voskResult)["text"];
                     //    text_LabelVoskTranscriptMicIn += voskResultValue + " | ";
                     //    Console.WriteLine(voskResultValue);
-                    //    //ThreadHelper.SetText(this, richTextBox_MicIn_Vosk_Transcript, text_LabelVoskTranscriptMicIn); // Move out to main Form
                     //}
                     // Transcript Mic using MS / API
                     if (checkBox_Mic_Use_MS == true)
@@ -178,31 +169,15 @@ namespace ClassLibrary_RecordingHelper_Net8
                         request.AlwaysMultipartFormData = true;
                         request.AddFile("file", fileOutputName);
                         RestResponse response = client.Execute(request);
-                        Console.WriteLine("API: " + response.Content);
+                        //Console.WriteLine("API: " + response.Content);
                         var jsonResult = JObject.Parse(response.Content);
                         var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
                         text_LabelMSTranscriptMicIn += result + " | ";
-                        //ThreadHelper.SetText(this, richTextBox_MicIn_MS_Transcript, text_LabelMSTranscriptMicIn); // Move out to main Form
                     }
-
                     if (threadMicRecordControl == 2) return;
                     i++;
                 }
             }
         }
-
-        //delegate void SetTextCallback(Form f, Control ctrl, string text);
-        //public static void SetText(Form form, Control ctrl, string text)
-        //{
-        //    if (ctrl.InvokeRequired)
-        //    {
-        //        SetTextCallback d = new SetTextCallback(SetText);
-        //        form.Invoke(d, new object[] { form, ctrl, text });
-        //    }
-        //    else
-        //    {
-        //        ctrl.Text = text;
-        //    }
-        //}
     }
 }

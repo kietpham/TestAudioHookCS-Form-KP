@@ -17,7 +17,6 @@ namespace ClassLibrary_RecordingHelper_Net4._8
         public static string currentProcessName;
         public static string serverURL;
         public static string serverPath;
-
         public static string text_LabelVoskTranscriptSystemAudio;   // Transcript text add in during run
         public static string text_LabelVoskTranscriptMicIn;         // Transcript text add in during run
         public static string text_LabelMSTranscriptSystemAudio;     // Transcript text add in during run
@@ -28,7 +27,6 @@ namespace ClassLibrary_RecordingHelper_Net4._8
         public static WaveInEvent waveIn;
         public static int threadMicRecordControl; // 1 start, 2 stop
         public static int threadSystemAudioRecordControl; // 1 start, 2 stop
-
         public static bool checkBox_RecordFile_System;
         public static bool checkBox_RecordFile_Mic;
         public static bool checkBox_SystemAudio_Use_Vosk;
@@ -119,8 +117,6 @@ namespace ClassLibrary_RecordingHelper_Net4._8
                 i++;
             }
         }
-
-
         public static void RecordMicIn()
         {
             Console.WriteLine("RecordMicIn");
