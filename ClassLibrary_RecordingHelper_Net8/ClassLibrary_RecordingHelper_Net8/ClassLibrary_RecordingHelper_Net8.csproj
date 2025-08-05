@@ -15,26 +15,10 @@
     <PackageReference Include="NAudio" Version="2.2.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="RestSharp" Version="112.1.0" />
-    <PackageReference Include="Vosk" Version="0.3.38" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libgcc_s_seh-1.dll" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libgcc_s_seh-1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libstdc++-6.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libvosk.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libwinpthread-1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
   </ItemGroup>
 
   <ItemGroup>
@@ -47,6 +31,14 @@
 
   <ItemGroup>
     <None Remove="C:\Users\Admin\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libwinpthread-1.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\kietf\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libvosk.dll" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="C:\Users\kietf\.nuget\packages\vosk\0.3.38\build\lib\win-x64\libvosk.dll" />
   </ItemGroup>
 
 </Project>
