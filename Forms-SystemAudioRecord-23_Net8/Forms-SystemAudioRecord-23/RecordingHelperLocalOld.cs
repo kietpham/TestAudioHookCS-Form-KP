@@ -1,14 +1,9 @@
-﻿using NAudio.Wave;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Windows.Forms;
-using Vosk;
+﻿using System.Windows.Forms;
+//using Vosk;
 
 namespace Forms_SystemAudioRecord_23
 {
+    /*
     public static class RecordingHelperLocalOld
     {
         public static Model voskModel;
@@ -194,6 +189,7 @@ namespace Forms_SystemAudioRecord_23
             }
         }
     }
+    */
 
     public static class ThreadHelper
     {
