@@ -60,3 +60,7 @@ nunit-*.xml
 /Forms-SystemAudioRecord-23/packages
 /Forms-SystemAudioRecord-23_Net8/.vs
 /Forms-SystemAudioRecord-23_Net8/packages
+/DotNet4.8/ClassLibrary_RecordingHelper_Net4.8/.vs
+/DotNet4.8/ClassLibrary_RecordingHelper_Net4.8/packages
+/Forms-SystemAudioRecord-23/packages
+/DotNet4.8/Forms-SystemAudioRecord-23_Net4.8/packages

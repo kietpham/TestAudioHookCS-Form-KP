@@ -203,7 +203,7 @@ namespace ClassLibrary_RecordingHelper_Net8
         {
             RecordingHelper.threadSystemAudioRecordControl = 2;
             Thread.Sleep(RecordingHelper.sleepTime + 500);
-            static_systemAudioRecordThread.Abort();
+            static_systemAudioRecordThread.Interrupt();
         }
         public static void StartRecordMicIn()
         {
@@ -216,7 +216,7 @@ namespace ClassLibrary_RecordingHelper_Net8
         {
             RecordingHelper.threadMicRecordControl = 2;
             Thread.Sleep(RecordingHelper.sleepTime + 500);
-            static_micRecordThread.Abort();
+            static_micRecordThread.Interrupt();
         }
         public static string GetMSTranscriptSystemAudio()
         {
