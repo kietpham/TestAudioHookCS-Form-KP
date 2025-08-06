@@ -39,7 +39,6 @@
     <PackageReference Include="System.Security.AccessControl" Version="6.0.1" />
     <PackageReference Include="System.Text.Encodings.Web" Version="9.0.8" />
     <PackageReference Include="System.Text.Json" Version="9.0.8" />
-    <PackageReference Include="Vosk" Version="0.3.38" />
     <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.SystemWebAdapters.CoreServices" Version="2.0.0" />
   </ItemGroup>

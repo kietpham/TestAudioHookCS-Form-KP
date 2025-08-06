@@ -12,8 +12,6 @@ using System.Management;
 using System.Net.Http;
 using System.Threading;
 using System.Windows.Forms;
-using System.Xml.Linq;
-using Vosk;
 
 
 namespace Forms_SystemAudioRecord_23
