@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using SideBar_Nav.Pages;
 
 namespace SideBar_Nav
 {
@@ -22,15 +24,14 @@ namespace SideBar_Nav
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void sidebar_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
+            // Initialize with the Record page
+            ccPageContent.Content = new RecordPage();
 
-            var selected = sidebar.SelectedItem as NavButton;
-
-            navframe.Navigate(selected.Navlink);
-
+            // Attach navigation button handlers
+            btnRecord.Click += (s, e) => { ccPageContent.Content = new RecordPage(); };
+            btnMeetingSummary.Click += (s, e) => { ccPageContent.Content = new MeetingSummaryPage(); };
+            btnSettings.Click += (s, e) => { ccPageContent.Content = new SettingsPage(); };
         }
     }
 }

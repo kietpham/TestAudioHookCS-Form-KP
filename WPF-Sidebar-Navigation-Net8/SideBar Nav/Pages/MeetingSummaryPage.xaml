@@ -1,0 +1,30 @@
+<UserControl x:Class="SideBar_Nav.Pages.MeetingSummaryPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="500" d:DesignWidth="600">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <!-- Header -->
+        <DockPanel Grid.Row="0" Margin="0,0,0,10">
+            <TextBlock Text="Meeting Summary" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" FontFamily="Times New Roman" />
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
+                <Button x:Name="SummaryButton" Content="Summary" Margin="5" DockPanel.Dock="Right" MinWidth="80" Foreground="White" Background="#FF1EA0FF"/>
+            </StackPanel>
+        </DockPanel>
+        <!-- Important Notes Section -->
+        <StackPanel Grid.Row="1">
+            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
+                <TextBlock Text="Important Notes" Foreground="White" FontWeight="SemiBold" />
+            </Border>
+            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="300">
+                <TextBox x:Name="NotesBox" Text="abc" AcceptsReturn="True" TextWrapping="Wrap" Margin="5"/>
+            </Border>
+        </StackPanel>
+    </Grid>
+</UserControl>
