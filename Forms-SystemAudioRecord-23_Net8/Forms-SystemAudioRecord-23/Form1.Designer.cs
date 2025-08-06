@@ -281,6 +281,7 @@
             AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             ClientSize = new System.Drawing.Size(750, 543);
+            ControlBox = false;
             Controls.Add(checkBox_Mic_Use_MS);
             Controls.Add(checkBox_Mic_Use_Vosk);
             Controls.Add(checkBox_SystemAudio_Use_MS);
