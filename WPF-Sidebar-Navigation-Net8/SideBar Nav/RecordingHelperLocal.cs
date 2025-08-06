@@ -113,10 +113,16 @@ namespace SideBar_Nav
                     request.AlwaysMultipartFormData = true;
                     request.AddFile("file", fileOutputName);
                     RestResponse response = client.Execute(request);
-                    //Console.WriteLine("API: " + response.Content);
-                    var jsonResult = JObject.Parse(response.Content);
-                    var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
-                    text_LabelMSTranscriptSystemAudio += result + " | ";
+                    Console.WriteLine("API result: " + response.Content);
+                    try
+                    {
+                        var jsonResult = JObject.Parse(response.Content);
+                        var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
+                        text_LabelMSTranscriptSystemAudio += result + " | ";
+                    }
+                    catch (Exception ex) {
+                        Console.WriteLine("Exception: " + ex.ToString());
+                    }
                 }
 
                 if (threadSystemAudioRecordControl == 2)
@@ -186,10 +192,17 @@ namespace SideBar_Nav
                         request.AlwaysMultipartFormData = true;
                         request.AddFile("file", fileOutputName);
                         RestResponse response = client.Execute(request);
-                        //Console.WriteLine("API: " + response.Content);
-                        var jsonResult = JObject.Parse(response.Content);
-                        var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
-                        text_LabelMSTranscriptMicIn += result + " | ";
+                        Console.WriteLine("API Result Mic In: " + response.Content);
+                        try
+                        {
+                            var jsonResult = JObject.Parse(response.Content);
+                            var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
+                            text_LabelMSTranscriptMicIn += result + " | ";
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine("Exception: " + ex.ToString());
+                        }
                     }
 
                     if (threadMicRecordControl == 2) return;

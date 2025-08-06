@@ -17,8 +17,8 @@
             <TextBlock Text="Record" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" FontFamily="Times New Roman" />
             <!-- Right aligned buttons -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <Button x:Name="btnStart" Content="Start" Margin="5" MinWidth="60" Background="#FF1EA0FF" Foreground="White" />
-                <Button x:Name="btnStop" Content="Stop" Margin="5" MinWidth="60" Foreground="White" Background="#FF1EA0FF" />
+                <Button x:Name="btnStart" Content="Start" Margin="5" MinWidth="60" Background="#FF1EA0FF" Foreground="White" Click="btnStart_Click" />
+                <Button x:Name="btnStop" Content="Stop" Margin="5" MinWidth="60" Foreground="White" Background="#FF1EA0FF" Click="btnStop_Click" />
                 <Button x:Name="btnHint" Content="Show Hint" Margin="5" MinWidth="60" Background="#FF1EA0FF" Foreground="White" Click="btnHint_Click" />
             </StackPanel>
         </DockPanel>
@@ -37,9 +37,29 @@
                 <TextBlock Text="Hint" Foreground="White" FontWeight="SemiBold" />
             </Border>
             <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="120">
-                <RichTextBox x:Name="rtbxHint" IsReadOnly="True" VerticalScrollBarVisibility="Visible"></RichTextBox>
+                <RichTextBox x:Name="rtbxHint" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
             </Border>
         </StackPanel>
         <StackPanel Grid.Row="1"/>
+        <TextBox x:Name="textBox_Conversation_Out" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="System Audio" VerticalAlignment="Top" Width="575" Height="63" Margin="0,5,0,0">
+            <UIElement.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </UIElement.RenderTransform>
+        </TextBox>
+        <TextBox x:Name="textBox_Conversation_In" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="Mic In" VerticalAlignment="Top" Width="575" Height="81" Margin="0,68,0,0">
+            <TextBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </TextBox.RenderTransform>
+        </TextBox>
     </Grid>
 </UserControl>

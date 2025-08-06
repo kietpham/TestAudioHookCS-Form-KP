@@ -22,9 +22,10 @@
             <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
                 <TextBlock Text="Important Notes" Foreground="White" FontWeight="SemiBold" />
             </Border>
-            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="300">
-                <TextBox x:Name="NotesBox" Text="abc" AcceptsReturn="True" TextWrapping="Wrap" Margin="5"/>
+            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="197">
+                <TextBox x:Name="NotesBox" Text="abc" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,5,0,9"/>
             </Border>
+            <TextBox x:Name="textBox_Summary" TextWrapping="Wrap" Text="TextBox" Width="554" Height="184"/>
         </StackPanel>
     </Grid>
 </UserControl>
