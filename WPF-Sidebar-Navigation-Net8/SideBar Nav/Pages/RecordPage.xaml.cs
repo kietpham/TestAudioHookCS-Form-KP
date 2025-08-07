@@ -83,6 +83,7 @@ namespace SideBar_Nav.Pages
             {
                 var s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
                 var s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
+
                 //textBox_Conversation_Out.Text = s_MSTranscriptSystemAudio;
                 //textBox_Conversation_In.Text = s_MSTranscriptMicIn;
 
