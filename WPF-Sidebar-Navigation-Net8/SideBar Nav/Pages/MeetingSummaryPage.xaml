@@ -11,10 +11,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+        <DockPanel Grid.Row="0" Margin="0,0,0,18">
             <TextBlock Text="Meeting Summary" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" />
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,8,0,0">
-                <Button x:Name="SummaryButton" Content="Summary" Margin="0,0,5,0" Padding="4" DockPanel.Dock="Right" MinWidth="60" Foreground="White" Background="#FF1EA0FF"/>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" >
+                <Button x:Name="SummaryButton" Content="Summary" DockPanel.Dock="Right" />
             </StackPanel>
         </DockPanel>
         <!-- Important Notes Section -->
@@ -25,7 +25,6 @@
             <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="240">
                 <RichTextBox x:Name="rtbxImportantNotes" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
             </Border>
-            <TextBox x:Name="textBox_Summary" TextWrapping="Wrap" Text="TextBox" Width="554" Height="184"/>
         </StackPanel>
     </Grid>
 </UserControl>

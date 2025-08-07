@@ -14,14 +14,14 @@
         </Grid.RowDefinitions>
         
         <!-- Header with title and controls -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+        <DockPanel Grid.Row="0" Margin="0,0,0,18">
             <!-- Title tag -->
             <TextBlock Text="Record" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24"/>
             <!-- Right aligned buttons -->
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,8,0,0">
-                <Button x:Name="btnStart" Content="Start" Margin="0,0,5,0" Padding="4" MinWidth="60" Background="#FF1EA0FF" Foreground="White" Click="btnStart_Click" />
-                <Button x:Name="btnStop" Content="Stop" Margin="0,0,5,0" Padding="4" MinWidth="60" Foreground="White" Background="#FF1EA0FF" Click="btnStop_Click" />
-                <Button x:Name="btnHint" Content="Show Hint" Margin="0,0,5,0" Padding="4" Width="70" MinWidth="60" Background="#FF1EA0FF" Foreground="White" Click="btnHint_Click" />
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" >
+                <Button x:Name="btnStart" Content="Start" Click="btnStart_Click" />
+                <Button x:Name="btnStop" Content="Stop" Click="btnStop_Click" />
+                <Button x:Name="btnHint" Content="Show Hint" Click="btnHint_Click" />
             </StackPanel>
         </DockPanel>
         <!-- Conversation section -->
@@ -34,7 +34,7 @@
             </Border>
         </StackPanel>
         <!-- Hint section -->
-        <StackPanel x:Name="spHint" Grid.Row="2" Margin="0,0,5,0" Visibility="Hidden">
+        <StackPanel x:Name="spHint" Grid.Row="2" Margin="0,0,5,0">
             <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,10,0,5">
                 <TextBlock Text="Hint" Foreground="White"  FontSize="16" />
             </Border>
@@ -43,25 +43,5 @@
             </Border>
         </StackPanel>
         <StackPanel Grid.Row="1"/>
-        <TextBox x:Name="textBox_Conversation_Out" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="System Audio" VerticalAlignment="Top" Width="575" Height="63" Margin="0,5,0,0">
-            <UIElement.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </UIElement.RenderTransform>
-        </TextBox>
-        <TextBox x:Name="textBox_Conversation_In" HorizontalAlignment="Left" Grid.Row="2" TextWrapping="Wrap" Text="Mic In" VerticalAlignment="Top" Width="575" Height="81" Margin="0,68,0,0">
-            <TextBox.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </TextBox.RenderTransform>
-        </TextBox>
     </Grid>
 </UserControl>

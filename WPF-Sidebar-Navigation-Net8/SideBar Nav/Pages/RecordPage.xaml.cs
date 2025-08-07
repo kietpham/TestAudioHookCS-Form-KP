@@ -15,12 +15,9 @@ namespace SideBar_Nav.Pages
     /// </summary>
     public partial class RecordPage : UserControl
     {
-        private bool isHintPanelShowed;
-
         public RecordPage()
         {
             InitializeComponent();
-            isHintPanelShowed = false;
 
             ConversationHelper.textUpdate = new Thread(new ThreadStart(UpdateText));
             ConversationHelper.textUpdate.IsBackground = true;
@@ -29,27 +26,11 @@ namespace SideBar_Nav.Pages
 
         private void btnHint_Click(object sender, RoutedEventArgs e)
         {
-            Button? btnObj = sender as Button;
-
-            if (isHintPanelShowed)
-            {
-                spHint.Visibility = Visibility.Hidden;
-                btnObj.Content = "Show Hint";
-                isHintPanelShowed = false;
-            }
-            else 
-            {
-                spHint.Visibility = Visibility.Visible;
-                btnObj.Content = "Hide Hint";
-                isHintPanelShowed = true;
-            }            
+       
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
         {
-            textBox_Conversation_Out.Text = ConversationHelper.conversationContent = "Hello World !";
-            textBox_Conversation_In.Text = ConversationHelper.conversationContent = "Hello World !";
-
             var dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.Filter = "Wave files | *.part.";
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
@@ -81,14 +62,16 @@ namespace SideBar_Nav.Pages
             Console.WriteLine("Update Text Started!");
             while (true)
             {
-                var s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
-                var s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
+                string s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
+                string s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
+                string result = s_MSTranscriptSystemAudio + Environment.NewLine + s_MSTranscriptMicIn;
 
-                //textBox_Conversation_Out.Text = s_MSTranscriptSystemAudio;
-                //textBox_Conversation_In.Text = s_MSTranscriptMicIn;
-
-                Console.WriteLine(s_MSTranscriptSystemAudio);
-                Console.WriteLine(s_MSTranscriptMicIn);
+                if (result != null && result != Environment.NewLine)
+                {
+                    Dispatcher.InvokeAsync(new Action(() => {
+                        rtbxConversation.AppendText(result);
+                    }));
+                }                
 
                 Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
 
