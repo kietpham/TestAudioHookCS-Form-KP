@@ -5,25 +5,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600">
-    <Grid Margin="20">
+    <Grid Margin="20, 0, 0, 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Header -->
-        <DockPanel Grid.Row="0" Margin="0,0,0,10">
-            <TextBlock Text="Meeting Summary" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" FontFamily="Times New Roman" />
-            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right">
-                <Button x:Name="SummaryButton" Content="Summary" Margin="5" DockPanel.Dock="Right" MinWidth="80" Foreground="White" Background="#FF1EA0FF"/>
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Meeting Summary" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" />
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" Margin="0,8,0,0">
+                <Button x:Name="SummaryButton" Content="Summary" Margin="0,0,5,0" Padding="4" DockPanel.Dock="Right" MinWidth="60" Foreground="White" Background="#FF1EA0FF"/>
             </StackPanel>
         </DockPanel>
         <!-- Important Notes Section -->
-        <StackPanel Grid.Row="1">
+        <StackPanel Grid.Row="1" Margin="0,0,5,0">
             <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
-                <TextBlock Text="Important Notes" Foreground="White" FontWeight="SemiBold" />
+                <TextBlock Text="Important Notes" Foreground="White" FontSize="16" />
             </Border>
-            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="197">
-                <TextBox x:Name="NotesBox" Text="abc" AcceptsReturn="True" TextWrapping="Wrap" Margin="0,5,0,9"/>
+            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="240">
+                <RichTextBox x:Name="rtbxImportantNotes" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
             </Border>
             <TextBox x:Name="textBox_Summary" TextWrapping="Wrap" Text="TextBox" Width="554" Height="184"/>
         </StackPanel>

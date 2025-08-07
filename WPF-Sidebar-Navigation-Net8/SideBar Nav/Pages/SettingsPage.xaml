@@ -5,28 +5,31 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d"
              d:DesignHeight="500" d:DesignWidth="600">
-    <Grid Margin="20">
+    <Grid Margin="20, 0, 0, 0">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <!-- Header -->
-        <TextBlock Text="Settings" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" FontFamily="Times New Roman"/>
+        <DockPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Settings" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24"/>
+        </DockPanel>
+        
         <!-- Content -->
-        <StackPanel Grid.Row="1" VerticalAlignment="Top">
-            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,10,0,5">
-                <TextBlock Text="Input Device" Foreground="White" FontWeight="SemiBold" />
+        <StackPanel Grid.Row="1" VerticalAlignment="Top" Margin="0,0,5,0">
+            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
+                <TextBlock Text="Input Device" Foreground="White" FontSize="16" />
             </Border>
-            <ComboBox x:Name="InputDeviceCombo" Margin="0,0,0,15">
-                <ComboBoxItem Content="Speakers (Realtek High Definition Audio)" />
+            <ComboBox x:Name="InputDeviceCombo" Height="28">
+                <ComboBoxItem Content="Speakers (Realtek High Definition Audio)" IsSelected="True"/>
                 <ComboBoxItem Content="Headphones" />
                 <ComboBoxItem Content="External Mic" />
             </ComboBox>
-            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,10,0,5">
-                <TextBlock Text="Output Device" Foreground="White" FontWeight="SemiBold" />
+            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,15,0,5">
+                <TextBlock Text="Output Device" Foreground="White" FontSize="16" />
             </Border>
-            <ComboBox x:Name="OutputDeviceCombo">
-                <ComboBoxItem Content="Microphone (Realtek High Definition Audio)" />
+            <ComboBox x:Name="OutputDeviceCombo" Height="28">
+                <ComboBoxItem Content="Microphone (Realtek High Definition Audio)" IsSelected="True"/>
                 <ComboBoxItem Content="Internal Mic" />
                 <ComboBoxItem Content="USB Mic" />
             </ComboBox>

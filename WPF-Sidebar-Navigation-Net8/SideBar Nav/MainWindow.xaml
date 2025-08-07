@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SideBar_Nav"
         mc:Ignorable="d"
-        Title="Meeting Note Taker" SnapsToDevicePixels="True" Height="500" Width="1000" MinHeight="400" MinWidth="800" Icon="pack://application:,,,/Assets/icon.png">
+        Title="Meeting Note Taker" SnapsToDevicePixels="True" Height="600" Width="1000" MinHeight="400" MinWidth="800" Icon="pack://application:,,,/Assets/icon.png">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220" />
