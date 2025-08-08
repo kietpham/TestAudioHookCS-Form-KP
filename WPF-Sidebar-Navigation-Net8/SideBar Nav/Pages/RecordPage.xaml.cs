@@ -84,8 +84,8 @@ namespace SideBar_Nav.Pages
 
                 Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
 
-                if (s_MSTranscriptSystemAudio.Length > 500000) RecordingHelper.SetMSTranscriptSystemAudio("");
-                if (s_MSTranscriptMicIn.Length > 500000) RecordingHelper.SetMSTranscriptMicIn("");
+                if (s_MSTranscriptSystemAudio.Length > 1200000) RecordingHelper.SetMSTranscriptSystemAudio("");
+                if (s_MSTranscriptMicIn.Length > 1200000) RecordingHelper.SetMSTranscriptMicIn("");
             }
         }
     }
