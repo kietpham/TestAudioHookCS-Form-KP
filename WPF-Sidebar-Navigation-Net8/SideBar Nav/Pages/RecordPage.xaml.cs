@@ -19,6 +19,8 @@ namespace SideBar_Nav.Pages
         {
             InitializeComponent();
 
+            btnStop.IsEnabled = false;
+
             ConversationHelper.textUpdate = new Thread(new ThreadStart(UpdateText));
             ConversationHelper.textUpdate.IsBackground = true;
             ConversationHelper.textUpdate.Start();
@@ -34,6 +36,10 @@ namespace SideBar_Nav.Pages
             var dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.Filter = "Wave files | *.part.";
             if (dialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
+
+            btnStop.IsEnabled = true;
+            btnStart.IsEnabled = false;
+
             RecordingHelper.outputSystemRecordFileName = dialog.FileName + "_system_audio_";
             RecordingHelper.outputMicRecordFileName = dialog.FileName + "_mic_in_";
 
@@ -43,6 +49,9 @@ namespace SideBar_Nav.Pages
 
         private void btnStop_Click(object sender, RoutedEventArgs e)
         {
+            btnStop.IsEnabled = false;
+            btnStart.IsEnabled = true;
+
             RecordingHelper.threadSystemAudioRecordControl = 2;
             RecordingHelper.threadMicRecordControl = 2;
             RecordingHelper.StoptRecordSystemAudio();
