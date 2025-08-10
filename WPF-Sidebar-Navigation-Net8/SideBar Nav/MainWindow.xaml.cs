@@ -43,7 +43,7 @@ namespace SideBar_Nav
             var directSoundOutList = DirectSoundOut.Devices.ToList();
             for (int i = 1; i < directSoundOutList.Count(); i++)
             {
-                Console.WriteLine(directSoundOutList[i].Description.ToString());
+                Trace.WriteLine(directSoundOutList[i].Description.ToString());
             }
 
             //RecordingHelper.voskModel = new Model(ConfigurationManager.AppSettings.Get("voskModelPath"));
@@ -64,6 +64,18 @@ namespace SideBar_Nav
             RecordingHelper.checkBox_Mic_Use_MS = true;
             RecordingHelper.serverPath = ConfigurationManager.AppSettings.Get("serverPath");
             RecordingHelper.serverURL = ConfigurationManager.AppSettings.Get("serverURL");
+
+            var inputAudioDevices = RecordingHelper.GetInputAudioDevices();
+            var outputAudioDevices = RecordingHelper.GetOutputAudioDevices();
+            Trace.WriteLine("inputAudioDevices: " + inputAudioDevices.Count);
+            foreach (var device in inputAudioDevices) {
+                Trace.WriteLine(device);
+            }
+            Trace.WriteLine("outputAudioDevices: " + outputAudioDevices.Count);
+            foreach (var device in outputAudioDevices)
+            {
+                Trace.WriteLine(device);
+            }
         }
     }
 }

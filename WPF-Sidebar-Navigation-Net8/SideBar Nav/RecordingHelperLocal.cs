@@ -1,9 +1,11 @@
 ﻿using Microsoft.VisualBasic;
+using NAudio.CoreAudioApi;
 using NAudio.Wave;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -41,7 +43,7 @@ namespace SideBar_Nav
         public static Thread static_micRecordThread;
         public static void RecordSystemAudio()
         {
-            Console.WriteLine("RecordSystemAudio");
+            Trace.WriteLine("RecordSystemAudio");
             int i = 0;
             //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);   // Obsoleted
             while (threadSystemAudioRecordControl == 1)
@@ -70,7 +72,7 @@ namespace SideBar_Nav
                     Array.Copy(e_a.Buffer, audioByteArray, e_a.BytesRecorded);
                     byteBuffer.AddRange(audioByteArray);
                 };
-                capture.RecordingStopped += (s, e) => { Console.WriteLine("Capture Recording Stopped"); };
+                capture.RecordingStopped += (s, e) => { Trace.WriteLine("Capture Recording Stopped"); };
 
                 capture.StartRecording();
                 Thread.Sleep(sleepTime);
@@ -90,7 +92,7 @@ namespace SideBar_Nav
                         writer.Close();
                     }
                 }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
                 // Transcript System Audio using Vosk - Obsoleted
                 //if (checkBox_SystemAudio_Use_Vosk == true && recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                 //{
@@ -113,7 +115,7 @@ namespace SideBar_Nav
                     request.AlwaysMultipartFormData = true;
                     request.AddFile("file", fileOutputName);
                     RestResponse response = client.Execute(request);
-                    Console.WriteLine("API result: " + response.Content);
+                    Trace.WriteLine("API result: " + response.Content);
                     try
                     {
                         var jsonResult = JObject.Parse(response.Content);
@@ -121,7 +123,7 @@ namespace SideBar_Nav
                         text_LabelMSTranscriptSystemAudio += result + " | ";
                     }
                     catch (Exception ex) {
-                        Console.WriteLine("Exception: " + ex.ToString());
+                        Trace.WriteLine("Exception: " + ex.ToString());
                     }
                 }
 
@@ -135,7 +137,7 @@ namespace SideBar_Nav
         }
         public static void RecordMicIn()
         {
-            Console.WriteLine("RecordMicIn");
+            Trace.WriteLine("RecordMicIn");
             int i = 0;
             //var recVosk = new VoskRecognizer(voskModel, micSampleRate);   // Obsoleted
             while (threadMicRecordControl == 1)
@@ -170,7 +172,7 @@ namespace SideBar_Nav
                             waveFile.Close();
                         }
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    catch (Exception ex) { Trace.WriteLine(ex.ToString()); }
                     // Transcript Mic using Vosk - Obsoleted
                     //if (checkBox_Mic_Use_Vosk == true & recVosk.AcceptWaveform(soundByteArray, soundByteArray.Length))
                     //{
@@ -192,7 +194,7 @@ namespace SideBar_Nav
                         request.AlwaysMultipartFormData = true;
                         request.AddFile("file", fileOutputName);
                         RestResponse response = client.Execute(request);
-                        Console.WriteLine("API Result Mic In: " + response.Content);
+                        Trace.WriteLine("API Result Mic In: " + response.Content);
                         try
                         {
                             var jsonResult = JObject.Parse(response.Content);
@@ -201,7 +203,7 @@ namespace SideBar_Nav
                         }
                         catch (Exception ex)
                         {
-                            Console.WriteLine("Exception: " + ex.ToString());
+                            Trace.WriteLine("Exception: " + ex.ToString());
                         }
                     }
 
@@ -252,6 +254,31 @@ namespace SideBar_Nav
         public static void SetMSTranscriptMicIn(string value)
         {
             text_LabelMSTranscriptMicIn = value;
+        }
+        public static List<string> GetInputAudioDevices()
+        {
+            List<string> deviceNames = new List<string>();
+            MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
+
+            foreach (MMDevice device in enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active))
+            {
+                deviceNames.Add(device.FriendlyName);
+            }
+
+            return deviceNames;
+        }
+        public static List<string> GetOutputAudioDevices()
+        {
+            List<string> deviceNames = new List<string>();
+            MMDeviceEnumerator enumerator = new MMDeviceEnumerator();
+
+            // Enumerate active audio rendering (output) devices
+            foreach (MMDevice device in enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active))
+            {
+                deviceNames.Add(device.FriendlyName);
+            }
+
+            return deviceNames;
         }
     }
 }

@@ -68,7 +68,7 @@ namespace SideBar_Nav.Pages
         }
         private void UpdateText()
         {
-            Console.WriteLine("Update Text Started!");
+            Trace.WriteLine("Update Text Started!");
             while (true)
             {
                 string s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
