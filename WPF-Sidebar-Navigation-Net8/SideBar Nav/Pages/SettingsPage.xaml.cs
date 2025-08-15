@@ -1,3 +1,4 @@
+using SideBar_Nav.ViewModels;
 using System.Windows.Controls;
 
 namespace SideBar_Nav.Pages
@@ -7,13 +8,16 @@ namespace SideBar_Nav.Pages
     /// </summary>
     public partial class SettingsPage : UserControl
     {
+        private SettingsVM settingsVM;
         public SettingsPage()
         {
             InitializeComponent();
-            cboInputDevice.ItemsSource = RecordingHelper.GetInputAudioDevices();
-            cboInputDevice.SelectedIndex = 0;
-            cboOutputDevice.ItemsSource = RecordingHelper.GetOutputAudioDevices();
-            cboOutputDevice.SelectedIndex = 0;
+            settingsVM = new SettingsVM();
+            settingsVM.InputDevices = RecordingHelper.GetInputAudioDevices();
+            settingsVM.OutputDevices = RecordingHelper.GetOutputAudioDevices();
+            settingsVM.SelectedInputDevice = settingsVM.InputDevices[0];
+            settingsVM.SelectedOutputDevice = settingsVM.OutputDevices[0];
+            this.DataContext = settingsVM;
         }
     }
 }

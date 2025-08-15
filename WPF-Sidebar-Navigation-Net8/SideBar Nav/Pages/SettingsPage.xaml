@@ -20,13 +20,11 @@
             <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
                 <TextBlock Text="Input Device" Foreground="White" FontSize="16" />
             </Border>
-            <ComboBox x:Name="cboInputDevice" Height="32" VerticalContentAlignment="Center" FontSize="14">
-            </ComboBox>
+            <ComboBox x:Name="cboInputDevice" Height="32" VerticalContentAlignment="Center" FontSize="14" ItemsSource="{Binding InputDevices}" SelectedItem="{Binding SelectedInputDevice}" />
             <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,15,0,5">
                 <TextBlock Text="Output Device" Foreground="White" FontSize="16" />
             </Border>
-            <ComboBox x:Name="cboOutputDevice" Height="32" VerticalContentAlignment="Center" FontSize="14">
-            </ComboBox>
+            <ComboBox x:Name="cboOutputDevice" Height="32" VerticalContentAlignment="Center" FontSize="14" ItemsSource="{Binding OutputDevices}" SelectedItem="{Binding SelectedOutputDevice}" />
         </StackPanel>
     </Grid>
 </UserControl>
