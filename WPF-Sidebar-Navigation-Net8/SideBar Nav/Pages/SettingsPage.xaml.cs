@@ -10,6 +10,10 @@ namespace SideBar_Nav.Pages
         public SettingsPage()
         {
             InitializeComponent();
+            cboInputDevice.ItemsSource = RecordingHelper.GetInputAudioDevices();
+            cboInputDevice.SelectedIndex = 0;
+            cboOutputDevice.ItemsSource = RecordingHelper.GetOutputAudioDevices();
+            cboOutputDevice.SelectedIndex = 0;
         }
     }
 }
