@@ -26,12 +26,12 @@ namespace SideBar_Nav.Pages
             ConversationHelper.textUpdate.Start();
         }
 
-        private void btnHint_Click(object sender, RoutedEventArgs e)
+        private void BtnHint_Click(object sender, RoutedEventArgs e)
         {
        
         }
 
-        private void btnStart_Click(object sender, RoutedEventArgs e)
+        private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
             var dialog = new System.Windows.Forms.SaveFileDialog();
             dialog.Filter = "Wave files | *.part.";
@@ -47,7 +47,7 @@ namespace SideBar_Nav.Pages
             RecordingHelper.StartRecordMicIn();
         }
 
-        private void btnStop_Click(object sender, RoutedEventArgs e)
+        private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
             btnStop.IsEnabled = false;
             btnStart.IsEnabled = true;

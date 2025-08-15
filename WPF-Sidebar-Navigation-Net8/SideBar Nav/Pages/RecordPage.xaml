@@ -19,9 +19,9 @@
             <TextBlock Text="Record" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24"/>
             <!-- Right aligned buttons -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" >
-                <Button x:Name="btnStart" Content="Start" Click="btnStart_Click" />
-                <Button x:Name="btnStop" Content="Stop" Click="btnStop_Click" />
-                <Button x:Name="btnHint" Content="Show Hint" Click="btnHint_Click" />
+                <Button x:Name="btnStart" Content="Start" Click="BtnStart_Click" />
+                <Button x:Name="btnStop" Content="Stop" Click="BtnStop_Click" />
+                <Button x:Name="btnHint" Content="Show Hint" Click="BtnHint_Click" />
             </StackPanel>
         </DockPanel>
         <!-- Conversation section -->
