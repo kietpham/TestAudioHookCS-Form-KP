@@ -219,7 +219,6 @@ namespace SideBar_Nav
                 }
             }
         }
-
         public static void StartRecordSystemAudio()
         {
             static_systemAudioRecordThread = new Thread(new ThreadStart(RecordingHelper.RecordSystemAudio));
@@ -287,7 +286,6 @@ namespace SideBar_Nav
 
             return deviceNames;
         }
-
         public static void FullConversationTranscript() {
             // Append all SystemAudio File
             try
@@ -320,7 +318,26 @@ namespace SideBar_Nav
             {
                 var systemRecordAll = new AudioFileReader(outputSystemRecordFileName + "All.wav");
                 var micInAll = new AudioFileReader(outputMicRecordFileName + "All.wav");
+
+                // Delay if needed (MicIn Record started after System Audio Record)
+                double delayInSeconds = 0.1;
+                var delayInSamples = (int)(micSampleRate * delayInSeconds);
+                var delayedMicInAll = new OffsetSampleProvider(micInAll.ToSampleProvider())
+                {
+                    DelayBySamples = delayInSamples
+                };
+                #region use delayed
+                // use delayed
+                //var mixer = new MixingSampleProvider(micInAll.WaveFormat); // Ensure all inputs have the same format
+                //mixer.AddMixerInput(systemRecordAll);
+                //mixer.AddMixerInput(delayedMicInAll);
+                #endregion
+
+                #region DO NOT use delayed
+                // Do NOT use delayed
                 var mixer = new MixingSampleProvider(new ISampleProvider[] { systemRecordAll, micInAll.ToSampleProvider() });
+                #endregion
+
                 WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All_Mixed.wav", (IWaveProvider)mixer);
             }
             catch (Exception ex)
