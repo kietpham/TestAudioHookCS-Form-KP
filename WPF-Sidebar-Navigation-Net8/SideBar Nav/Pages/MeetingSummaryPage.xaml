@@ -14,7 +14,7 @@
         <DockPanel Grid.Row="0" Margin="0,0,0,18">
             <TextBlock Text="Meeting Summary" Foreground="#FF454545" FontWeight="SemiBold" FontSize="24" />
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" HorizontalAlignment="Right" >
-                <Button x:Name="SummaryButton" Content="Summary" DockPanel.Dock="Right" />
+                <Button x:Name="SummaryButton" Content="Summary" DockPanel.Dock="Right" Click="SummaryButton_Click" />
             </StackPanel>
         </DockPanel>
         <!-- Important Notes Section -->
