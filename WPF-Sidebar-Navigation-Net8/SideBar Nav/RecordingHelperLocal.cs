@@ -287,11 +287,11 @@ namespace SideBar_Nav
             return deviceNames;
         }
         public static void FullConversationTranscript() {
-            // Append all SystemAudio File
+            // Append all SystemAudio File & Append all MicIn File
             try
             {
                 var providersSystemAudio = new List<ISampleProvider> { };
-                for (int i = 0; i < i_RecordSystemAudio; i++)
+                for (int i = 0; i < i_RecordSystemAudio - 1; i++)
                 {
                     var file = new AudioFileReader(outputSystemRecordFileName + i.ToString() + ".wav");
                     providersSystemAudio.Add(file);
@@ -299,9 +299,8 @@ namespace SideBar_Nav
                 var concatenatedProviderSystemAudio = new ConcatenatingSampleProvider(providersSystemAudio);
                 WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All.wav", concatenatedProviderSystemAudio.ToWaveProvider());
 
-                // Append all MicIn File
                 var providersMicIn = new List<ISampleProvider> { };
-                for (int i = 0; i < i_RecordMicIn; i++)
+                for (int i = 0; i < i_RecordMicIn - 1; i++)
                 {
                     var file = new AudioFileReader(outputMicRecordFileName + i.ToString() + ".wav");
                     providersMicIn.Add(file);
@@ -374,6 +373,8 @@ namespace SideBar_Nav
             }
         }
         public static void FullConversationSummary() {
+            if (text_TranscriptAll == "") FullConversationTranscript();
+
             // Summary all
             try
             {
