@@ -66,6 +66,7 @@ namespace SideBar_Nav.Pages
             };
             Process.Start(processStartInfo);
         }
+
         private void UpdateText()
         {
             Trace.WriteLine("Update Text Started!");
@@ -73,14 +74,13 @@ namespace SideBar_Nav.Pages
             {
                 string s_MSTranscriptSystemAudio = RecordingHelper.GetMSTranscriptSystemAudio();
                 string s_MSTranscriptMicIn = RecordingHelper.GetMSTranscriptMicIn();
-                string result = s_MSTranscriptSystemAudio + Environment.NewLine + s_MSTranscriptMicIn;
 
-                if (result != null && result != Environment.NewLine)
-                {
-                    Dispatcher.InvokeAsync(new Action(() => {
-                        rtbxConversation.AppendText(result);
-                    }));
-                }                
+                Dispatcher.InvokeAsync(new Action(() => {
+                    rtbxSystemAudio.Document.Blocks.Clear();
+                    rtbxMicIn.Document.Blocks.Clear();
+                    rtbxSystemAudio.AppendText(s_MSTranscriptSystemAudio);
+                    rtbxMicIn.AppendText(s_MSTranscriptMicIn);
+                }));
 
                 Thread.Sleep(int.Parse(ConfigurationManager.AppSettings.Get("sleepTime")) + 500);
 

@@ -11,6 +11,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         
         <!-- Header with title and controls -->
@@ -24,24 +25,47 @@
                 <Button x:Name="btnHint" Content="Show Hint" Click="BtnHint_Click" />
             </StackPanel>
         </DockPanel>
-        <!-- Conversation section -->
-        <StackPanel Grid.Row="1" Margin="0,0,5,0">
-            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
-                <TextBlock Text="Conversation" Foreground="White" FontSize="16"/>
+        
+        <!-- System Audio section -->
+        <Grid Grid.Row="1" Margin="0,0,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
+                <TextBlock Text="System Audio" Foreground="White" FontSize="16"/>
             </Border>
-            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="180">
-                <RichTextBox x:Name="rtbxConversation" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
+            <Border Grid.Row="1" BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" >
+                <RichTextBox x:Name="rtbxSystemAudio" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
             </Border>
-        </StackPanel>
+        </Grid>
+
+        <!-- Mic In section -->
+        <Grid Grid.Row="2" Margin="0,5,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
+                <TextBlock Text="Mic In" Foreground="White" FontSize="16"/>
+            </Border>
+            <Border Grid.Row="1" BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" >
+                <RichTextBox x:Name="rtbxMicIn" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
+            </Border>
+        </Grid>
+        
         <!-- Hint section -->
-        <StackPanel x:Name="spHint" Grid.Row="2" Margin="0,0,5,0">
-            <Border Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,10,0,5">
-                <TextBlock Text="Hint" Foreground="White"  FontSize="16" />
+        <Grid Grid.Row="3" Margin="0,5,5,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="#FF1EA0FF" Padding="6" CornerRadius="4" Margin="0,0,0,5">
+                <TextBlock Text="Hint" Foreground="White" FontSize="16"/>
             </Border>
-            <Border BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" Height="180">
-                <RichTextBox x:Name="rtbxHint" IsReadOnly="True" VerticalScrollBarVisibility="Visible"></RichTextBox>
+            <Border Grid.Row="1" BorderBrush="#e7eaf1" BorderThickness="1" CornerRadius="12" >
+                <RichTextBox x:Name="rtbxHint" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>
             </Border>
-        </StackPanel>
-        <StackPanel Grid.Row="1"/>
+        </Grid>
     </Grid>
 </UserControl>
