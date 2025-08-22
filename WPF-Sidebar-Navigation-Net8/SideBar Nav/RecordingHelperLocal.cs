@@ -395,7 +395,6 @@ namespace SideBar_Nav
                     var jsonResult = JObject.Parse(responseSystemAudio.Content);
                     text_SummaryAll = jsonResult["candidates"][0]["content"]["parts"][0]["text"].ToString();
                     Trace.WriteLine("API parsed result: " + text_SummaryAll);
-                    // Display
                 }
                 catch (Exception ex)
                 {
