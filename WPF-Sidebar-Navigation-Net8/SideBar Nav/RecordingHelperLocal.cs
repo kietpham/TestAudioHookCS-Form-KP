@@ -319,15 +319,14 @@ namespace SideBar_Nav
                 var systemRecordAll = new AudioFileReader(outputSystemRecordFileName + "All.wav");
                 var micInAll = new AudioFileReader(outputMicRecordFileName + "All.wav");
 
-                // Delay if needed (MicIn Record started after System Audio Record)
-                double delayInSeconds = 0.1;
-                var delayInSamples = (int)(micSampleRate * delayInSeconds);
-                var delayedMicInAll = new OffsetSampleProvider(micInAll.ToSampleProvider())
-                {
-                    DelayBySamples = delayInSamples
-                };
                 #region use delayed
-                // use delayed
+                // use delayed if needed (MicIn Record started after System Audio Record), the handling for delay time is not yet done
+                //double delayInSeconds = 0.1;
+                //var delayInSamples = (int)(micSampleRate * delayInSeconds);
+                //var delayedMicInAll = new OffsetSampleProvider(micInAll.ToSampleProvider())
+                //{
+                //    DelayBySamples = delayInSamples
+                //};
                 //var mixer = new MixingSampleProvider(micInAll.WaveFormat); // Ensure all inputs have the same format
                 //mixer.AddMixerInput(systemRecordAll);
                 //mixer.AddMixerInput(delayedMicInAll);
