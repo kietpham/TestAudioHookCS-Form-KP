@@ -1,10 +1,12 @@
 ﻿using Microsoft.VisualBasic;
 using NAudio.CoreAudioApi;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using Newtonsoft.Json.Linq;
 using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -29,6 +31,8 @@ namespace SideBar_Nav
         public static string text_LabelVoskTranscriptMicIn = "";         // Transcript text add in during run
         public static string text_LabelMSTranscriptSystemAudio = "";     // Transcript text add in during run
         public static string text_LabelMSTranscriptMicIn = "";           // Transcript text add in during run
+        public static string text_TranscriptAll = "";           // Transcript text add in during run
+        public static string text_SummaryAll = "";           // Transcript text add in during run
         public static WasapiLoopbackCapture capture;
         public static WaveInEvent waveIn;
         public static int threadMicRecordControl;   // 1 start, 2 stop
@@ -41,10 +45,13 @@ namespace SideBar_Nav
         public static bool checkBox_Mic_Use_MS;
         public static Thread static_systemAudioRecordThread;
         public static Thread static_micRecordThread;
+
+        public static int i_RecordSystemAudio;
+        public static int i_RecordMicIn;
         public static void RecordSystemAudio()
         {
             Trace.WriteLine("RecordSystemAudio");
-            int i = 0;
+            int i_RecordSystemAudio = 0;
             //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);   // Obsoleted
             while (threadSystemAudioRecordControl == 1)
             {
@@ -81,7 +88,7 @@ namespace SideBar_Nav
                 var soundByteArray = byteBuffer.ToArray();
 
                 // Save file
-                string fileOutputName = outputSystemRecordFileName + i.ToString() + ".wav";
+                string fileOutputName = outputSystemRecordFileName + i_RecordSystemAudio.ToString() + ".wav";
                 try
                 {
                     if (checkBox_RecordFile_System == true)
@@ -132,13 +139,13 @@ namespace SideBar_Nav
                     capture.Dispose();
                     return;
                 }
-                i++;
+                i_RecordSystemAudio++;
             }
         }
         public static void RecordMicIn()
         {
             Trace.WriteLine("RecordMicIn");
-            int i = 0;
+            int i_RecordMicIn = 0;
             //var recVosk = new VoskRecognizer(voskModel, micSampleRate);   // Obsoleted
             while (threadMicRecordControl == 1)
             {
@@ -161,7 +168,7 @@ namespace SideBar_Nav
 
                     // save File
                     var soundByteArray = byteBuffer.ToArray();
-                    string fileOutputName = outputMicRecordFileName + i.ToString() + ".wav";
+                    string fileOutputName = outputMicRecordFileName + i_RecordMicIn.ToString() + ".wav";
                     try
                     {
                         if (checkBox_RecordFile_Mic == true)
@@ -208,7 +215,7 @@ namespace SideBar_Nav
                     }
 
                     if (threadMicRecordControl == 2) return;
-                    i++;
+                    i_RecordMicIn++;
                 }
             }
         }
@@ -279,6 +286,110 @@ namespace SideBar_Nav
             }
 
             return deviceNames;
+        }
+
+        public static void FullConversationTranscript() {
+            // Append all SystemAudio File
+            try
+            {
+                var providersSystemAudio = new List<ISampleProvider> { };
+                for (int i = 0; i < i_RecordSystemAudio; i++)
+                {
+                    var file = new AudioFileReader(outputSystemRecordFileName + i.ToString() + ".wav");
+                    providersSystemAudio.Add(file);
+                }
+                var concatenatedProviderSystemAudio = new ConcatenatingSampleProvider(providersSystemAudio);
+                WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All.wav", concatenatedProviderSystemAudio.ToWaveProvider());
+
+                // Append all MicIn File
+                var providersMicIn = new List<ISampleProvider> { };
+                for (int i = 0; i < i_RecordMicIn; i++)
+                {
+                    var file = new AudioFileReader(outputMicRecordFileName + i.ToString() + ".wav");
+                    providersMicIn.Add(file);
+                }
+                var concatenatedProviderMicIn = new ConcatenatingSampleProvider(providersMicIn);
+                WaveFileWriter.CreateWaveFile(outputMicRecordFileName + "All.wav", concatenatedProviderMicIn.ToWaveProvider());
+            }
+            catch (Exception ex) {
+                Trace.WriteLine("FullConversationTranscript - Append all SystemAudio File");
+            }
+
+            // Mix SystemAudio and MicIn
+            try
+            {
+                var systemRecordAll = new AudioFileReader(outputSystemRecordFileName + "All.wav");
+                var micInAll = new AudioFileReader(outputMicRecordFileName + "All.wav");
+                var mixer = new MixingSampleProvider(new ISampleProvider[] { systemRecordAll, micInAll.ToSampleProvider() });
+                WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All_Mixed.wav", (IWaveProvider)mixer);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("FullConversationTranscript - Mix SystemAudio and MicIn");
+            }
+
+            // Transcript all
+            try
+            {
+                var options = new RestClientOptions(serverURL)
+                {
+                    Timeout = new TimeSpan(0, 15, 0)
+                };
+                var client = new RestClient(options);
+                var request = new RestRequest(serverPath, Method.Post);
+                request.AlwaysMultipartFormData = true;
+                request.AddFile("file", outputSystemRecordFileName + "All_Mixed.wav");
+                RestResponse response = client.Execute(request);
+                Trace.WriteLine("API Result Mix SystemAudio and MicIn: " + response.Content);
+                try
+                {
+                    var jsonResult = JObject.Parse(response.Content);
+                    var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"].ToString();
+                    text_TranscriptAll = result;
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine("Exception: " + ex.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("FullConversationTranscript - Transcript all");
+            }
+        }
+        public static void FullConversationSummary() {
+            // Summary all
+            try
+            {
+                var summaryPath = ConfigurationManager.AppSettings.Get("serverPathSummary");
+                // Generate Summary
+                var options = new RestClientOptions(RecordingHelper.serverURL)
+                {
+                    Timeout = new TimeSpan(0, 15, 0)
+                };
+                var client = new RestClient(options);
+                var requestSystemAudio = new RestRequest(summaryPath, Method.Post);
+                requestSystemAudio.AlwaysMultipartFormData = true;
+                var textSystemAudio = RecordingHelper.text_LabelMSTranscriptSystemAudio.Replace(" | ", string.Empty);
+                requestSystemAudio.AddBody("text", textSystemAudio);
+                RestResponse responseSystemAudio = client.Execute(requestSystemAudio);
+                Trace.WriteLine("API result: " + responseSystemAudio.Content);
+                try
+                {
+                    var jsonResult = JObject.Parse(responseSystemAudio.Content);
+                    text_SummaryAll = jsonResult["candidates"][0]["content"]["parts"][0]["text"].ToString();
+                    Trace.WriteLine("API parsed result: " + text_SummaryAll);
+                    // Display
+                }
+                catch (Exception ex)
+                {
+                    Trace.WriteLine("Exception: " + ex.ToString());
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine("FullConversationSummary - Summary all");
+            }
         }
     }
 }
