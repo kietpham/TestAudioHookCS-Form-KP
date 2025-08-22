@@ -51,7 +51,7 @@ namespace SideBar_Nav
         public static void RecordSystemAudio()
         {
             Trace.WriteLine("RecordSystemAudio");
-            int i_RecordSystemAudio = 0;
+            i_RecordSystemAudio = 0;
             //var recVosk = new VoskRecognizer(voskModel, systemAudioSampleRate);   // Obsoleted
             while (threadSystemAudioRecordControl == 1)
             {
@@ -145,7 +145,7 @@ namespace SideBar_Nav
         public static void RecordMicIn()
         {
             Trace.WriteLine("RecordMicIn");
-            int i_RecordMicIn = 0;
+            i_RecordMicIn = 0;
             //var recVosk = new VoskRecognizer(voskModel, micSampleRate);   // Obsoleted
             while (threadMicRecordControl == 1)
             {
@@ -336,7 +336,7 @@ namespace SideBar_Nav
                 var mixer = new MixingSampleProvider(new ISampleProvider[] { systemRecordAll, micInAll.ToSampleProvider() });
                 #endregion
 
-                WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All_Mixed.wav", (IWaveProvider)mixer);
+                WaveFileWriter.CreateWaveFile16(outputSystemRecordFileName + "All_Mixed.wav", mixer);
             }
             catch (Exception ex)
             {
