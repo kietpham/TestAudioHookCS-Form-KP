@@ -333,10 +333,16 @@ namespace SideBar_Nav
 
                 #region DO NOT use delayed
                 // Do NOT use delayed
-                var mixer = new MixingSampleProvider(new ISampleProvider[] { systemRecordAll, micInAll.ToSampleProvider() });
+                //Obsoleted
+                //var mixer = new MixingSampleProvider(new ISampleProvider[] { systemRecordAll, micInAll.ToSampleProvider() });
+                //WaveFileWriter.CreateWaveFile16(outputSystemRecordFileName + "All_Mixed.wav", mixer);
+
+                var mixer = new MixingWaveProvider32();
+                mixer.AddInputStream(systemRecordAll.ToWaveProvider());
+                mixer.AddInputStream(micInAll.ToWaveProvider());
                 #endregion
 
-                WaveFileWriter.CreateWaveFile16(outputSystemRecordFileName + "All_Mixed.wav", mixer);
+                WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All_Mixed.wav", mixer);
             }
             catch (Exception ex)
             {
