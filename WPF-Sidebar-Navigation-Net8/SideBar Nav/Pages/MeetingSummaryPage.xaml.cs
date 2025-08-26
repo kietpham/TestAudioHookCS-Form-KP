@@ -24,6 +24,7 @@ namespace SideBar_Nav.Pages
         private void SummaryButton_Click(object sender, RoutedEventArgs e)
         {
             RecordingHelper.FullConversationSummary();
+            Trace.WriteLine(RecordingHelper.text_SummaryAll);
         }
     }
 }
