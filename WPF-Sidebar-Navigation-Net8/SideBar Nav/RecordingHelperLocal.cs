@@ -378,7 +378,10 @@ namespace SideBar_Nav
                 Trace.WriteLine("FullConversationTranscript - Transcript all");
             }
         }
-        public static void FullConversationSummary() {
+        public static void FullConversationSummary()
+        {
+            if (text_TranscriptAll == "") FullConversationTranscript();
+
             // Summary all
             try
             {
