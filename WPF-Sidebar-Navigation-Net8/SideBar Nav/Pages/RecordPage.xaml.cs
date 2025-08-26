@@ -65,8 +65,8 @@ namespace SideBar_Nav.Pages
                 UseShellExecute = true
             };
             Process.Start(processStartInfo);
-            //RecordingHelper.FullConversationTranscript();
-            //RecordingHelper.FullConversationSummary();
+            RecordingHelper.FullConversationTranscript();
+            rtbxHint.AppendText(RecordingHelper.text_TranscriptAll);
         }
 
         private void UpdateText()

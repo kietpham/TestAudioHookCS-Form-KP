@@ -23,8 +23,11 @@ namespace SideBar_Nav.Pages
 
         private void SummaryButton_Click(object sender, RoutedEventArgs e)
         {
+            if(RecordingHelper.text_TranscriptAll == "") RecordingHelper.FullConversationTranscript();
+            rtbxImportantNotes.AppendText(RecordingHelper.text_TranscriptAll);
             RecordingHelper.FullConversationSummary();
-            Trace.WriteLine(RecordingHelper.text_SummaryAll);
+            rtbxImportantNotes.AppendText("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n");
+            rtbxImportantNotes.AppendText(RecordingHelper.text_SummaryAll);
         }
     }
 }

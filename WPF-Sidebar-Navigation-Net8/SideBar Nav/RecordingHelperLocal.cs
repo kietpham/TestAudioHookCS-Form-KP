@@ -379,8 +379,6 @@ namespace SideBar_Nav
             }
         }
         public static void FullConversationSummary() {
-            if (text_TranscriptAll == "") FullConversationTranscript();
-
             // Summary all
             try
             {
@@ -393,8 +391,7 @@ namespace SideBar_Nav
                 var client = new RestClient(options);
                 var requestSystemAudio = new RestRequest(summaryPath, Method.Post);
                 requestSystemAudio.AlwaysMultipartFormData = true;
-                var textSystemAudio = RecordingHelper.text_LabelMSTranscriptSystemAudio.Replace(" | ", string.Empty);
-                requestSystemAudio.AddBody("text", textSystemAudio);
+                requestSystemAudio.AddParameter("text", text_TranscriptAll);
                 RestResponse responseSystemAudio = client.Execute(requestSystemAudio);
                 Trace.WriteLine("API result: " + responseSystemAudio.Content);
                 try
