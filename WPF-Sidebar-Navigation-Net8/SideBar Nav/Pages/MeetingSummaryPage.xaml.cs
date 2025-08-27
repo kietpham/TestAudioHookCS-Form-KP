@@ -26,7 +26,7 @@ namespace SideBar_Nav.Pages
             if(RecordingHelper.text_TranscriptAll == "") RecordingHelper.FullConversationTranscript();
             rtbxImportantNotes.AppendText(RecordingHelper.text_TranscriptAll + "\r\n");
             RecordingHelper.FullConversationSummary();
-            rtbxImportantNotes.AppendText("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n");
+            rtbxImportantNotes.AppendText("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\r\n");
             rtbxImportantNotes.AppendText(RecordingHelper.text_SummaryAll + "\r\n");
         }
     }
