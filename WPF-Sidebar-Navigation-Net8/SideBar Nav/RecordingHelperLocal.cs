@@ -291,7 +291,12 @@ namespace SideBar_Nav
             try
             {
                 var providersSystemAudio = new List<ISampleProvider> { };
-                for (int i = 0; i < i_RecordSystemAudio - 1; i++)
+                int i_SAMax = 0;
+                if (threadSystemAudioRecordControl == 1)
+                    i_SAMax = i_RecordSystemAudio - 1;
+                else
+                    i_SAMax = i_RecordSystemAudio;
+                for (int i = 0; i < i_SAMax; i++)
                 {
                     var file = new AudioFileReader(outputSystemRecordFileName + i.ToString() + ".wav");
                     providersSystemAudio.Add(file);
@@ -300,7 +305,12 @@ namespace SideBar_Nav
                 WaveFileWriter.CreateWaveFile(outputSystemRecordFileName + "All.wav", concatenatedProviderSystemAudio.ToWaveProvider());
 
                 var providersMicIn = new List<ISampleProvider> { };
-                for (int i = 0; i < i_RecordMicIn - 1; i++)
+                int i_MicMax = 0;
+                if (threadMicRecordControl == 1)
+                    i_MicMax = i_RecordMicIn - 1;
+                else
+                    i_MicMax = i_RecordMicIn;
+                for (int i = 0; i < i_MicMax; i++)
                 {
                     var file = new AudioFileReader(outputMicRecordFileName + i.ToString() + ".wav");
                     providersMicIn.Add(file);

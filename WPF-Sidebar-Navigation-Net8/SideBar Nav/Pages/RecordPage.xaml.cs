@@ -28,7 +28,7 @@ namespace SideBar_Nav.Pages
 
         private void BtnHint_Click(object sender, RoutedEventArgs e)
         {
-       
+            rtbxHint.AppendText(RecordingHelper.GetMSTranscriptSystemAudio().Replace(" | ", " "));
         }
 
         private void BtnStart_Click(object sender, RoutedEventArgs e)
@@ -65,8 +65,8 @@ namespace SideBar_Nav.Pages
                 UseShellExecute = true
             };
             Process.Start(processStartInfo);
-            RecordingHelper.FullConversationTranscript();
-            rtbxHint.AppendText(RecordingHelper.text_TranscriptAll);
+            //RecordingHelper.FullConversationTranscript();
+            rtbxHint.AppendText(RecordingHelper.GetMSTranscriptSystemAudio().Replace(" | "," "));
         }
 
         private void UpdateText()
