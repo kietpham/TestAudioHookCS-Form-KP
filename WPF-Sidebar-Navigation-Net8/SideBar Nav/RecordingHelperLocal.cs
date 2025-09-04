@@ -287,6 +287,7 @@ namespace SideBar_Nav
             return deviceNames;
         }
         public static void FullConversationTranscript() {
+            text_TranscriptAll = "";
             // Append all SystemAudio File & Append all MicIn File
             try
             {
