@@ -112,19 +112,19 @@ namespace SideBar_Nav
                 //}
                 // Transcript System Audio using MS
                 if (checkBox_SystemAudio_Use_MS == true)
-                {
-                    var options = new RestClientOptions(serverURL)
-                    {
-                        Timeout = new TimeSpan(0, 15, 0)
-                    };
-                    var client = new RestClient(options);
-                    var request = new RestRequest(serverPath, Method.Post);
-                    request.AlwaysMultipartFormData = true;
-                    request.AddFile("file", fileOutputName);
-                    RestResponse response = client.Execute(request);
-                    Trace.WriteLine("API result: " + response.Content);
+                {                 
                     try
                     {
+                        var options = new RestClientOptions(serverURL)
+                        {
+                            Timeout = new TimeSpan(0, 15, 0)
+                        };
+                        var client = new RestClient(options);
+                        var request = new RestRequest(serverPath, Method.Post);
+                        request.AlwaysMultipartFormData = true;
+                        request.AddFile("file", fileOutputName);
+                        RestResponse response = client.Execute(request);
+                        Trace.WriteLine("API result: " + response.Content);
                         var jsonResult = JObject.Parse(response.Content);
                         var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
                         text_LabelMSTranscriptSystemAudio += result + " | ";
@@ -191,22 +191,23 @@ namespace SideBar_Nav
                     //}
                     // Transcript Mic using MS / API
                     if (checkBox_Mic_Use_MS == true)
-                    {
-                        var options = new RestClientOptions(serverURL)
-                        {
-                            Timeout = new TimeSpan(0, 15, 0)
-                        };
-                        var client = new RestClient(options);
-                        var request = new RestRequest(serverPath, Method.Post);
-                        request.AlwaysMultipartFormData = true;
-                        request.AddFile("file", fileOutputName);
-                        RestResponse response = client.Execute(request);
-                        Trace.WriteLine("API Result Mic In: " + response.Content);
+                    {                        
                         try
                         {
+                            var options = new RestClientOptions(serverURL)
+                            {
+                                Timeout = new TimeSpan(0, 15, 0)
+                            };
+                            var client = new RestClient(options);
+                            var request = new RestRequest(serverPath, Method.Post);
+                            request.AlwaysMultipartFormData = true;
+                            request.AddFile("file", fileOutputName);
+                            RestResponse response = client.Execute(request);
+                            Trace.WriteLine("API Result Mic In: " + response.Content);
                             var jsonResult = JObject.Parse(response.Content);
                             var result = jsonResult["candidates"][0]["content"]["parts"][0]["text"];
                             text_LabelMSTranscriptMicIn += result + " | ";
+
                         }
                         catch (Exception ex)
                         {
